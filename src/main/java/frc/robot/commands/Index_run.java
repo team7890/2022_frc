@@ -4,10 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
 
 public class Index_run extends CommandBase {
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Indexer.slewRate);
   private final double dSpeed;
   private final Indexer m_index;
   /** Creates a new Index_runIn. */
@@ -29,7 +33,7 @@ public class Index_run extends CommandBase {
   @Override
   public void execute() 
   {
-    m_index.runIndexer(dSpeed);
+    m_index.runIndexer(filter.calculate(dSpeed));
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +41,7 @@ public class Index_run extends CommandBase {
   public void end(boolean interrupted) 
   {
     m_index.stopIndex();
+    filter.reset(0.0);
   }
 
   // Returns true when the command should end.

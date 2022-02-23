@@ -14,8 +14,17 @@ package frc.robot;
  */
 public final class Constants 
 {
+    public final class CanID
+    {
+        public static final int Intake = 10;
+        public final static int Indexer = 11;
+        public static final int ShooterRight = 12;
+        public static final int ShooterLeft = 13;
+    }
     public final class Intake
     {
+        public static final double slewRate = 0.1;
+        public static final int currentLimit = 5;
         public static final double intakeSpeed = 0.4;
     }
     public final class JoystickOI
@@ -24,16 +33,22 @@ public final class Constants
     }
     public final class Indexer
     {
+        public static final double slewRate = 0.1;
+        public static final int currentLimit = 5;
         public static final double indexRevSpeed = -0.1;
         public static final double indexSpeed = 0.125;
     }
     public final class Shooter
     {
+        public static final double slewRate = 0.4;
+        public static final int currentLimit = 5;
         public static final double shooterSpeed = 0.4;
         public static final double shooterRevSpeed = -0.1;
     }
     public final class Elevator
     {
+        public static final double slewRate = 0.1;
+        public static final int currentLimit = 10;
         public static final double elevatorSpeed = 0.1;
         public static final double elevatorRevSpeed = -0.05;
     }
