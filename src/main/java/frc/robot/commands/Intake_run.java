@@ -4,10 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class Intake_run extends CommandBase {
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   private final double dSpeed;
   private final Intake m_intake;
   /** Creates a new Intake_runIn. */
@@ -29,7 +33,7 @@ public class Intake_run extends CommandBase {
   @Override
   public void execute() 
   {
-    m_intake.runIntake(dSpeed);
+    m_intake.runIntake(filter.calculate(dSpeed));
   }
 
   // Called once the command ends or is interrupted.
@@ -37,6 +41,7 @@ public class Intake_run extends CommandBase {
   public void end(boolean interrupted) 
   {
     m_intake.stopIntake();
+    filter.reset(0.0);
   }
 
   // Returns true when the command should end.

@@ -4,16 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 public class Shooter_run extends CommandBase {
+  SlewRateLimiter filter = new SlewRateLimiter(.1);
   private final double dSpeed;
   private final Shooter m_Shooter;
   /** Creates a new Shooter_runIn. */
   public Shooter_run(Shooter Shooter_in, double speed_in) {
     m_Shooter = Shooter_in;
-    dSpeed = speed_in;
+    dSpeed = filter.calculate(speed_in);
     addRequirements(m_Shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -4,21 +4,26 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 
 public class Intake extends SubsystemBase {
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   /** Creates a new Intake. */
   private CANSparkMax m_intakeMotor = new CANSparkMax(10, MotorType.kBrushless);
   public Intake() 
   {
-
+    m_intakeMotor.setIdleMode(IdleMode.kCoast);
+    m_intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
+    //m_intakeMotor.setClosedLoopRampRate(20);
   }
 
   @Override
