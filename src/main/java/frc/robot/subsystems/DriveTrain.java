@@ -4,15 +4,17 @@
 
 package frc.robot.subsystems;
 
-import com.swervedrivespecialties.swervelib.*;
+// import com.swervedrivespecialties.swervelib.*;
 import edu.wpi.first.math.geometry.Translation2d;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+// import java.lang.Math.*;
+// import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -29,6 +31,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 public class DriveTrain extends SubsystemBase {
+  private frc.robot.utils.PID driftCorrectionPID = new frc.robot.utils.PID(0.07, 0.00, 0.004,0,0);
+  private double startingX, startingY;
+  private double desiredHeading;
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>
@@ -46,6 +51,14 @@ public class DriveTrain extends SubsystemBase {
    * <p>
    * This is a measure of how fast the robot should be able to drive in a straight line.
    */
+  // By default we use a Pigeon for our gyroscope. But if you use another gyroscope, like a NavX, you can change this.
+  // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
+  // cause the angle reading to increase until it wraps back over to zero.
+  // FIXME Remove if you are not using a Pigeon
+  // private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
+  // FIXME Uncomment if you are using a NavX
+  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L1.getDriveReduction() *
           SdsModuleConfigurations.MK4_L1.getWheelDiameter() * Math.PI;
@@ -66,16 +79,9 @@ public class DriveTrain extends SubsystemBase {
           // Back left
           new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
           // Back right
-          new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0)
-  );
+          new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
-  // By default we use a Pigeon for our gyroscope. But if you use another gyroscope, like a NavX, you can change this.
-  // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
-  // cause the angle reading to increase until it wraps back over to zero.
-  // FIXME Remove if you are not using a Pigeon
-  // private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
-  // FIXME Uncomment if you are using a NavX
-  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
+  private Pose2d pose = new Pose2d(startingX, startingY, getGyroscopeRotation());
 
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
@@ -85,7 +91,9 @@ public class DriveTrain extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  public DriveTrain() {
+  public DriveTrain(double startingX, double startingY) {
+    this.startingX = startingX;
+    this.startingY = startingY;
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // There are 4 methods you can call to create your swerve modules.
@@ -172,7 +180,10 @@ public class DriveTrain extends SubsystemBase {
     m_navx.zeroYaw();
   }
 
-  public Rotation2d getGyroscopeRotation() {
+  public Rotation2d getGyroscopeRotation(){
+  //   // return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+  //   return Rotation2d.fromDegrees(1.86);
+  // }
     // FIXME Remove if you are using a Pigeon
     // return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
 
@@ -188,6 +199,15 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
+  }
+
+  double pXY = 0;
+  public void driftCorrection(ChassisSpeeds Speeds)
+  {
+    double xy = Math.abs(Speeds.vxMetersPerSecond) + Math.abs(Speeds.vyMetersPerSecond);
+    if(Math.abs(Speeds.omegaRadiansPerSecond) > 0.0 || pXY <= 0) desiredHeading = pose.getRotation().getDegrees();
+    else if (xy > 0) Speeds.omegaRadiansPerSecond += driftCorrectionPID.calc(pose.getRotation().getDegrees(), desiredHeading);
+    pXY = xy;
   }
 
   @Override

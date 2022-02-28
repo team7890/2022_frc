@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class RobotContainer {
-  private final DriveTrain m_driveTrain = new DriveTrain();
+  private final DriveTrain m_driveTrain = new DriveTrain(2, 2);
 
   private final XboxController m_controller = new XboxController(0);
 
