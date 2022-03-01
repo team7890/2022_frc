@@ -18,8 +18,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 public class Shooter extends SubsystemBase {
   private SupplyCurrentLimitConfiguration supplyConfig = new SupplyCurrentLimitConfiguration(true, 40, 45, 0);
   /** Creates a new Shooter. */
-  private TalonFX m_ShooterMotorRight = new TalonFX(12);
-  private TalonFX m_ShooterMotorLeft = new TalonFX(13);
+  private TalonFX m_ShooterMotorRight = new TalonFX(12, "rio");
+  private TalonFX m_ShooterMotorLeft = new TalonFX(13, "rio");
   public Shooter() 
   {
 
