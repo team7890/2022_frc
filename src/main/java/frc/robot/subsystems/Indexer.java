@@ -31,6 +31,7 @@ public class Indexer extends SubsystemBase {
   {
     // This method will be called once per scheduler run
   }
+  
   public void runIndexer(double speed_in)
   {
     m_indexMotor.set(speed_in);
@@ -39,6 +40,7 @@ public class Indexer extends SubsystemBase {
   // {
   //   m_indexMotor.set(-(Constants.Index.indexSpeed));
   // }
+  
   public void stopIndex()
   {
     m_indexMotor.set(0.0);
