@@ -93,7 +93,7 @@ public class RobotContainer {
             .whenPressed(m_driveTrain::zeroGyroscope);
     // CLIMBER
     
-    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_controller::getRightY));
+    // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_controller::getRightY));
   
     // THIS IS FOR THE INDEXER
     new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Index_run(m_indexer, Constants.Indexer.indexSpeed));
