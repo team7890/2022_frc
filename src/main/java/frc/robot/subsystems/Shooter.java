@@ -5,20 +5,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMax.IdleMode;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 
 public class Shooter extends SubsystemBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   /** Creates a new Shooter. */
-  private CANSparkMax m_ShooterMotor = new CANSparkMax(11, MotorType.kBrushless);
+  // May want to rename "DriveTrain" later
+  private TalonFX m_ShooterMotorLeft = new TalonFX(12, "FastCAN");
+  private TalonFX m_ShooterMotorRight = new TalonFX(13, "FastCAN");
   public Shooter() 
   {
-    m_ShooterMotor.setIdleMode(IdleMode.kCoast);
-    m_ShooterMotor.setSmartCurrentLimit(Constants.Shooter.currentLimit);
+    m_ShooterMotorLeft.configFactoryDefault();
+    m_ShooterMotorRight.configFactoryDefault();
+
+    // enabled (boolean)| Limit(amp) (double) | Trigger Threshold(amp) (double) | Trigger Threshold Time(s)  (double)
+    m_ShooterMotorLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Shooter.currentLimit, Constants.Shooter.currentLimit, 0.0));
+    m_ShooterMotorRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Shooter.currentLimit, Constants.Shooter.currentLimit, 0.0));
+
+    // m_ShooterMotorLeft.configSupplyCurrentLimit(40.0, 0);
+
+    // m_ShooterMotor.setIdleMode(IdleMode.kCoast);
+    // m_ShooterMotor.setSmartCurrentLimit(Constants.Shooter.currentLimit);
 
   }
 
@@ -29,7 +44,8 @@ public class Shooter extends SubsystemBase {
   }
   public void runShooter(double speed_in)
   {
-    m_ShooterMotor.set(speed_in);
+    m_ShooterMotorLeft.set(ControlMode.PercentOutput, speed_in);
+    m_ShooterMotorRight.set(ControlMode.PercentOutput, -speed_in);
   }
   // public void runShooterOut()
   // {
@@ -37,6 +53,7 @@ public class Shooter extends SubsystemBase {
   // }
   public void stopShooter()
   {
-    m_ShooterMotor.set(0.0);
+    m_ShooterMotorLeft.set(ControlMode.PercentOutput, 0.0);
+    m_ShooterMotorRight.set(ControlMode.PercentOutput, 0.0);
   }
 }

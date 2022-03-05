@@ -88,23 +88,29 @@ public class RobotContainer {
             .whenPressed(m_driveTrain::zeroGyroscope);
     */
     // Back button zeros the gyroscope
-    new JoystickButton(m_driverController, Button.kBack.value)
+    new JoystickButton(m_driverController, Button.kA.value)
             // No requirements because we don't need to interrupt anything
             .whenPressed(m_driveTrain::zeroGyroscope);
     // CLIMBER
-    //new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_controller::getRightY));
+    
+    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_controller::getRightY));
   
-    // THIS IS FOR THE FIRST HALF OF THE INDEXER
-    new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Intake_run(m_intake, Constants.Indexer.indexSpeed));
-    // THIS IS FOR THE SECOND HALF OF THE INDEXER
-    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, Constants.Indexer.indexSpeed));
+    // THIS IS FOR THE INDEXER
+    new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Index_run(m_indexer, Constants.Indexer.indexSpeed));
+    // REVERSE INDEXER
+    new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Index_run(m_indexer, - Constants.Indexer.indexSpeed));
 
 
+    // SET UP TO THE WINCH AND CHANGE BUTTON
+    // new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
+
+    // BASIC INTAKE
     new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
     //new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, 0.25 * Constants.Intake.intakeSpeed));
     
-    new JoystickButton(m_driverController, Button.kLeftBumper.value).whenHeld(new Intake_run(m_intake, Constants.Shooter.shooterRevSpeed));
-    new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new Intake_run(m_intake, Constants.Shooter.shooterSpeed));
+    // SHOOTER
+    new JoystickButton(m_driverController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
+    new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
   }
 
   /**

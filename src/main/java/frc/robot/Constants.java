@@ -74,14 +74,14 @@ public final class Constants
     public final class Shooter
     {
         public static final double slewRate = 0.4;
-        public static final int currentLimit = 5;
+        public static final int currentLimit = 40;
         public static final double shooterSpeed = 0.4;
         public static final double shooterRevSpeed = -0.1;
     }
-    public final class Elevator
+    public final class Climber
     {
         public static final double slewRate = 0.1;
-        public static final int currentLimit = 10;
+        public static final int currentLimit = 80;
         public static final double elevatorSpeed = 0.1;
         public static final double elevatorRevSpeed = -0.05;
     }

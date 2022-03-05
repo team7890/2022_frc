@@ -16,12 +16,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class Indexer extends SubsystemBase {
-  SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Indexer.slewRate);
   /** Creates a new Index. */
   private CANSparkMax m_indexMotor = new CANSparkMax(11, MotorType.kBrushless);
   public Indexer() 
   {
-    m_indexMotor.setIdleMode(IdleMode.kCoast);
+    m_indexMotor.setIdleMode(IdleMode.kBrake);
     m_indexMotor.setSmartCurrentLimit(Constants.Indexer.currentLimit);
 
   }

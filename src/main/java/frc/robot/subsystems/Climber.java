@@ -6,8 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 
 //import static frc.robot.Constants.*;
@@ -18,7 +21,7 @@ public class Climber extends SubsystemBase {
   //private CANSparkMax m_indexMotor = new CANSparkMax(11, MotorType.kBrushless);
   
   private TalonFX m_climbMotorLeft = new TalonFX(15, "rio");
-  //private TalonFX m_climbMotorRight = new TalonFX(16, "rio");
+  // private TalonFX m_climbMotorRight = new TalonFX(16, "rio");
 
 
 
@@ -26,6 +29,11 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   public Climber() 
   {
+    m_climbMotorLeft.configFactoryDefault();
+    m_climbMotorLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Climber.currentLimit, Constants.Climber.currentLimit, 0.0));
+
+    // m_climbMotorRight.configFactoryDefault();
+    // m_climbMotorRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Climber.currentLimit, Constants.Climber.currentLimit, 0.0));
 
   }
 

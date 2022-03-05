@@ -62,7 +62,7 @@ public final class Falcon500DriveControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            TalonFX motor = new TalonFX(driveConfiguration, "rio");
+            TalonFX motor = new TalonFX(driveConfiguration, "FastCAN");
             motor.configAllSettings(motorConfiguration);
 
             if (hasVoltageCompensation()) {
