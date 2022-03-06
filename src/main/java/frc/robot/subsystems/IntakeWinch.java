@@ -13,21 +13,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
-
-public class Intake extends SubsystemBase {
+public class IntakeWinch extends SubsystemBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
-  /** Creates a new Intake. */
-  private CANSparkMax m_intakeMotor = new CANSparkMax(10, MotorType.kBrushless);
-  // private CANSparkMax m_intakeWinchMotor = new CANSparkMax(10, MotorType.kBrushless);
-  public Intake() 
-  {
-    m_intakeMotor.setIdleMode(IdleMode.kCoast);
-    m_intakeMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
-    //m_intakeMotor.setClosedLoopRampRate(20);
+    /** Creates a new Intake. */
+  private CANSparkMax m_intakeWinchMotor = new CANSparkMax(15, MotorType.kBrushless);
 
-  //   m_intakeWinchMotor.setIdleMode(IdleMode.kCoast);
-  //   m_intakeWinchMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
+  /** Creates a new IntakeWinch. */
+  public IntakeWinch() {
+    m_intakeWinchMotor.setIdleMode(IdleMode.kCoast);
+    m_intakeWinchMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
   }
 
   @Override
@@ -35,9 +29,9 @@ public class Intake extends SubsystemBase {
   {
     // This method will be called once per scheduler run
   }
-  public void runIntake(double speed_in)
+  public void runIntakeWinch(double speed_in)
   {
-    m_intakeMotor.set(speed_in);
+    m_intakeWinchMotor.set(speed_in);
 
     // m_intakeWinchMotor.set(speed_in);
   }
@@ -45,9 +39,9 @@ public class Intake extends SubsystemBase {
   // {
   //   m_intakeMotor.set(-(Constants.Intake.intakeSpeed));
   // }
-  public void stopIntake()
+  public void stopIntakeWinch()
   {
-    m_intakeMotor.set(0.0);
+    m_intakeWinchMotor.set(0.0);
 
     // m_intakeWinchMotor.set(0.0);
   }

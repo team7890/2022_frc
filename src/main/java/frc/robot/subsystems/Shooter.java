@@ -44,8 +44,20 @@ public class Shooter extends SubsystemBase {
   }
   public void runShooter(double speed_in)
   {
-    m_ShooterMotorLeft.set(ControlMode.PercentOutput, speed_in);
-    m_ShooterMotorRight.set(ControlMode.PercentOutput, -speed_in);
+    // if (Constants.applySlewRate)
+    // {
+    //   m_ShooterMotorLeft.set(ControlMode.PercentOutput, speed_in);
+    //   m_ShooterMotorRight.set(ControlMode.PercentOutput, -speed_in);
+    // }
+    // else
+    // {
+    //   m_ShooterMotorLeft.set(ControlMode.PercentOutput, speed_in);
+    //   m_ShooterMotorRight.set(ControlMode.PercentOutput, -speed_in);
+    // }
+    m_ShooterMotorLeft.set(ControlMode.PercentOutput, - speed_in);
+    m_ShooterMotorRight.set(ControlMode.PercentOutput, speed_in);
+
+    
   }
   // public void runShooterOut()
   // {

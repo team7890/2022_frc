@@ -12,7 +12,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.IntakeWinch;
 
+import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
 import frc.robot.commands.Shooter_run;
 import frc.robot.commands.Index_run;
@@ -49,6 +51,7 @@ public class RobotContainer {
   private final Climber m_climber = new Climber();
   private final Indexer m_indexer = new Indexer();
   private final Shooter m_shooter = new Shooter();
+  private final IntakeWinch m_intakeWinch = new IntakeWinch();
 
   private final XboxController m_controller = new XboxController(0);
 
@@ -68,7 +71,8 @@ public class RobotContainer {
             () -> -modifyAxis(m_controller.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_controller.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
-    m_climber.setDefaultCommand(new Climber_run(m_climber, m_controller::getRightY));
+    m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_controller.getRightY())));
+    // m_climber.setDefaultCommand(new Climber_run(m_climber, m_controller::getRightY));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -100,9 +104,9 @@ public class RobotContainer {
     // REVERSE INDEXER
     new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Index_run(m_indexer, - Constants.Indexer.indexSpeed));
 
-
     // SET UP TO THE WINCH AND CHANGE BUTTON
-    // new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
+    new JoystickButton(m_driverController, Button.kStart.value).whenHeld(new IntakeWinch_run(m_intakeWinch, Constants.Intake.intakeWinchSpeed));
+    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new IntakeWinch_run(m_intakeWinch, - Constants.Intake.intakeWinchSpeed));
 
     // BASIC INTAKE
     new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
@@ -111,6 +115,9 @@ public class RobotContainer {
     // SHOOTER
     new JoystickButton(m_driverController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
     new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
+
+    // RESET GYROSCOPE
+    // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope(););
   }
 
   /**

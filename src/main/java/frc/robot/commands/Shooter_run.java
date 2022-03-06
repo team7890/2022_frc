@@ -6,16 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
 public class Shooter_run extends CommandBase {
-  SlewRateLimiter filter = new SlewRateLimiter(.1);
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Shooter.slewRate);
   private final double dSpeed;
   private final Shooter m_Shooter;
   /** Creates a new Shooter_runIn. */
   public Shooter_run(Shooter Shooter_in, double speed_in) {
     m_Shooter = Shooter_in;
-    dSpeed = filter.calculate(speed_in);
+    dSpeed = speed_in;
     addRequirements(m_Shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -31,7 +33,16 @@ public class Shooter_run extends CommandBase {
   @Override
   public void execute() 
   {
-    m_Shooter.runShooter(dSpeed);
+    // Ability to toggle slew rate
+    if (Constants.applySlewRate)
+    {
+      m_Shooter.runShooter(filter.calculate(dSpeed));
+    }
+    else
+    {
+      m_Shooter.runShooter(dSpeed);
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -39,6 +50,7 @@ public class Shooter_run extends CommandBase {
   public void end(boolean interrupted) 
   {
     m_Shooter.stopShooter();
+    filter.reset(0.0);
   }
 
   // Returns true when the command should end.

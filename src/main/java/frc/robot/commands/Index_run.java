@@ -33,7 +33,16 @@ public class Index_run extends CommandBase {
   @Override
   public void execute() 
   {
-    m_index.runIndexer(filter.calculate(dSpeed));
+    // Ability to toggle slew rate
+    if (Constants.applySlewRate)
+    {
+      m_index.runIndexer(filter.calculate(dSpeed));
+    }
+    else
+    {
+      m_index.runIndexer(dSpeed);
+    }
+    
   }
 
   // Called once the command ends or is interrupted.

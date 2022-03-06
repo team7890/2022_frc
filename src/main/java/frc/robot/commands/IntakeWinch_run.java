@@ -8,17 +8,17 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeWinch;
 
-public class Intake_run extends CommandBase {
+public class IntakeWinch_run extends CommandBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   private final double dSpeed;
-  private final Intake m_intake;
+  private final IntakeWinch m_intakeWinch;
   /** Creates a new Intake_runIn. */
-  public Intake_run(Intake intake_in, double speed_in) {
-    m_intake = intake_in;
+  public IntakeWinch_run(IntakeWinch intakeWinch_in, double speed_in) {
+    m_intakeWinch = intakeWinch_in;
     dSpeed = speed_in;
-    addRequirements(m_intake);
+    addRequirements(m_intakeWinch);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +26,7 @@ public class Intake_run extends CommandBase {
   @Override
   public void initialize() 
   {
-    m_intake.stopIntake();
+    m_intakeWinch.stopIntakeWinch();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,11 +36,11 @@ public class Intake_run extends CommandBase {
     // Ability to toggle slew rate
     if (Constants.applySlewRate)
     {
-      m_intake.runIntake(filter.calculate(dSpeed));
+      m_intakeWinch.runIntakeWinch(filter.calculate(dSpeed));
     }
     else
     {
-      m_intake.runIntake(dSpeed);
+      m_intakeWinch.runIntakeWinch(dSpeed);
     }
     
   }
@@ -49,7 +49,7 @@ public class Intake_run extends CommandBase {
   @Override
   public void end(boolean interrupted) 
   {
-    m_intake.stopIntake();
+    m_intakeWinch.stopIntakeWinch();
     filter.reset(0.0);
   }
 

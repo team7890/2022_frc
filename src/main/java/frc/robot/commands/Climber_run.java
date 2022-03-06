@@ -4,14 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.subsystems.Climber;
+import frc.robot.Constants;
 
 
 import java.util.function.DoubleSupplier;
 
 public class Climber_run extends CommandBase {
+    SlewRateLimiter filter = new SlewRateLimiter(Constants.Shooter.slewRate);
     private final Climber m_Climber;
 
     private final DoubleSupplier m_speedSupplier;
@@ -25,13 +29,24 @@ public class Climber_run extends CommandBase {
 
     @Override
     public void execute() {
-      m_Climber.runClimber(m_speedSupplier.getAsDouble());
+        // Ability to toggle slew rate
+    if (Constants.applySlewRate)
+    {
+        m_Climber.runClimber(filter.calculate(m_speedSupplier.getAsDouble()));
+    }
+    else
+    {
+        m_Climber.runClimber(m_speedSupplier.getAsDouble());
+    }
+    //   m_Climber.runClimber(m_speedSupplier.getAsDouble());
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
         
     }
 
     @Override
     public void end(boolean interrupted) {
+        
+        filter.reset(0.0);
      
     }
 }

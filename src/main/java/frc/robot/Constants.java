@@ -14,6 +14,9 @@ package frc.robot;
  */
 public final class Constants 
 {
+    // Toggle Slew Rate
+    public static final boolean applySlewRate = true;
+
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = (21.5*2.54)/100; // FIXME Measure and set trackwidth
     /**
      * The front-to-back distance between the drivetrain wheels.
@@ -35,6 +38,10 @@ public final class Constants
     // public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(90.1); // FIXME Measure and set back right steer offset
 
     // values for comp bot measured on 3/4/22 by John C.
+
+
+
+    // DriveTrain
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(341.5); // FIXME Measure and set front left steer offset
     public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(343.5); // FIXME Measure and set front right steer offset
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(254.9); // FIXME Measure and set back left steer offset
@@ -70,7 +77,8 @@ public final class Constants
     {
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
-        public static final double intakeSpeed = 1.0;
+        public static final double intakeSpeed = .7;
+        public static final double intakeWinchSpeed = .2;
     }
     public final class JoystickOI
     {
@@ -81,13 +89,13 @@ public final class Constants
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
         public static final double indexRevSpeed = -0.1;
-        public static final double indexSpeed = 0.5;
+        public static final double indexSpeed = 0.4;
     }
     public final class Shooter
     {
         public static final double slewRate = 0.4;
         public static final int currentLimit = 40;
-        public static final double shooterSpeed = 0.4;
+        public static final double shooterSpeed = 0.3;
         public static final double shooterRevSpeed = -0.1;
     }
     public final class Climber
