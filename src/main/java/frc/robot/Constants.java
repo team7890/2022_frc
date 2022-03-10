@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants 
 {
     // Toggle Slew Rate
-    public static final boolean applySlewRate = true;
+    // public static final boolean applySlewRate = true;
 
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = (21.5*2.54)/100; // FIXME Measure and set trackwidth
     /**
@@ -47,21 +47,7 @@ public final class Constants
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(254.9); // FIXME Measure and set back left steer offset
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.2); // FIXME Measure and set back right steer offset
 
-    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 21; // FIXME Set front left module drive motor ID
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 22; // FIXME Set front left module steer motor ID
-    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 23; // FIXME Set front left steer encoder ID
 
-    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 31; // FIXME Set front right drive motor ID
-    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 32; // FIXME Set front right steer motor ID
-    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 33; // FIXME Set front right steer encoder ID
-
-    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 41; // FIXME Set back left drive motor ID
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 42; // FIXME Set back left steer motor ID
-    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 43; // FIXME Set back left steer encoder ID
-
-    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 51; // FIXME Set back right drive motor ID
-    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 52; // FIXME Set back right steer motor ID
-    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 53; // FIXME Set back right steer encoder ID
 
 
 
@@ -72,37 +58,76 @@ public final class Constants
         public final static int Indexer = 11;
         public static final int ShooterRight = 12;
         public static final int ShooterLeft = 13;
+        public static final int IntakeWinch = 15;
+        public static final int ClimberLeft = 16;
+        public static final int ClimberRight = 17;
+
+        // Drive Train CanIDs
+        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 21; // FIXME Set front left module drive motor ID
+        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 22; // FIXME Set front left module steer motor ID
+        public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 23; // FIXME Set front left steer encoder ID
+    
+        public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 31; // FIXME Set front right drive motor ID
+        public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 32; // FIXME Set front right steer motor ID
+        public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 33; // FIXME Set front right steer encoder ID
+    
+        public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 41; // FIXME Set back left drive motor ID
+        public static final int BACK_LEFT_MODULE_STEER_MOTOR = 42; // FIXME Set back left steer motor ID
+        public static final int BACK_LEFT_MODULE_STEER_ENCODER = 43; // FIXME Set back left steer encoder ID
+    
+        public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 51; // FIXME Set back right drive motor ID
+        public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 52; // FIXME Set back right steer motor ID
+        public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 53; // FIXME Set back right steer encoder ID
     }
+
+    public final class JoystickOI
+    {
+        public static final int driverStickPort = 0;
+        public static final int coStickPort = 1;
+    }
+
     public final class Intake
     {
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
-        public static final double intakeSpeed = .7;
+        public static final double intakeSpeed = .9;
         public static final double intakeWinchSpeed = .2;
+        public static final boolean applySlewRate = true;
     }
-    public final class JoystickOI
+
+    public final class IntakeWinch
     {
-        public static final int driverStickPort = 0;
+        public static final double slewRate = 0.7;
+        public static final int currentLimit = 10;
+        public static final double intakeSpeed = .9;
+        public static final double intakeWinchSpeed = .2;
+        public static final boolean applySlewRate = true;
     }
+
     public final class Indexer
     {
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
         public static final double indexRevSpeed = -0.1;
-        public static final double indexSpeed = 0.4;
+        public static final double indexSpeed = 1;
+        public static final boolean applySlewRate = true;
     }
+
     public final class Shooter
     {
         public static final double slewRate = 0.4;
         public static final int currentLimit = 40;
-        public static final double shooterSpeed = 0.3;
+        public static final double shooterSpeed = .3;
         public static final double shooterRevSpeed = -0.1;
+        public static final boolean applySlewRate = true;
     }
+    
     public final class Climber
     {
         public static final double slewRate = 0.5;
-        public static final int currentLimit = 80;
+        public static final int currentLimit = 60;
         public static final double elevatorSpeed = 0.1;
         public static final double elevatorRevSpeed = -0.05;
+        public static final boolean applySlewRate = false;
     }
 }

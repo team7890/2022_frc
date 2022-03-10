@@ -16,7 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class IntakeWinch extends SubsystemBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
     /** Creates a new Intake. */
-  private CANSparkMax m_intakeWinchMotor = new CANSparkMax(15, MotorType.kBrushless);
+  private CANSparkMax m_intakeWinchMotor = new CANSparkMax(Constants.CanID.IntakeWinch, MotorType.kBrushless);
 
   /** Creates a new IntakeWinch. */
   public IntakeWinch() {

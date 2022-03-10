@@ -34,7 +34,7 @@ public class Shooter_run extends CommandBase {
   public void execute() 
   {
     // Ability to toggle slew rate
-    if (Constants.applySlewRate)
+    if (Constants.Shooter.applySlewRate)
     {
       m_Shooter.runShooter(filter.calculate(dSpeed));
     }

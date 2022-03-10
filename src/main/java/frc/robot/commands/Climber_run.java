@@ -15,7 +15,7 @@ import frc.robot.Constants;
 import java.util.function.DoubleSupplier;
 
 public class Climber_run extends CommandBase {
-    SlewRateLimiter filter = new SlewRateLimiter(Constants.Shooter.slewRate);
+    SlewRateLimiter filter = new SlewRateLimiter(Constants.Climber.slewRate);
     private final Climber m_Climber;
 
     private final DoubleSupplier m_speedSupplier;
@@ -30,7 +30,7 @@ public class Climber_run extends CommandBase {
     @Override
     public void execute() {
         // Ability to toggle slew rate
-    if (Constants.applySlewRate)
+    if (Constants.Climber.applySlewRate)
     {
         m_Climber.runClimber(filter.calculate(m_speedSupplier.getAsDouble()));
     }

@@ -53,7 +53,7 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
   private final IntakeWinch m_intakeWinch = new IntakeWinch();
 
-  private final XboxController m_controller = new XboxController(0);
+  private final XboxController m_coController = new XboxController(Constants.JoystickOI.coStickPort);
 
   XboxController m_driverController = new XboxController(Constants.JoystickOI.driverStickPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -67,12 +67,12 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_driveTrain.setDefaultCommand(new DriveTrain_run(
             m_driveTrain,
-            () -> -modifyAxis(m_controller.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_driverController.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_driverController.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
-    m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_controller.getRightY())));
-    // m_climber.setDefaultCommand(new Climber_run(m_climber, m_controller::getRightY));
+    m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
+    // m_climber.setDefaultCommand(new Climber_run(m_climber, m_driverController::getRightY));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -85,36 +85,47 @@ public class RobotContainer {
    */
   private void configureButtonBindings() 
   {
-    /*
-    FIXME (Check this statement vs the next statement)
-    new Button(m_controller::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_driveTrain::zeroGyroscope);
-    */
+    
+    // FIXE (Check this statement vs the next statement)
+    // new Button(m_driverController::getBackButton)
+    //         // No requirements because we don't need to interrupt anything
+    //         .whenPressed(m_driveTrain::zeroGyroscope);
+    
+
+
     // Back button zeros the gyroscope
-    new JoystickButton(m_driverController, Button.kA.value)
+    // Pilot
+    new JoystickButton(m_driverController, Button.kStart.value)
             // No requirements because we don't need to interrupt anything
             .whenPressed(m_driveTrain::zeroGyroscope);
+
+
     // CLIMBER
     
-    // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_controller::getRightY));
+    // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_driverController::getRightY));
   
     // THIS IS FOR THE INDEXER
-    new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Index_run(m_indexer, Constants.Indexer.indexSpeed));
+    // co-pilot
+    new JoystickButton(m_coController, Button.kY.value).whenHeld(new Index_run(m_indexer, Constants.Indexer.indexSpeed));
     // REVERSE INDEXER
-    new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Index_run(m_indexer, - Constants.Indexer.indexSpeed));
+    // co-pilot
+    new JoystickButton(m_coController, Button.kA.value).whenHeld(new Index_run(m_indexer, - Constants.Indexer.indexSpeed));
 
     // SET UP TO THE WINCH AND CHANGE BUTTON
-    new JoystickButton(m_driverController, Button.kStart.value).whenHeld(new IntakeWinch_run(m_intakeWinch, Constants.Intake.intakeWinchSpeed));
-    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new IntakeWinch_run(m_intakeWinch, - Constants.Intake.intakeWinchSpeed));
+    // FIXME change buttons to dpad up/down
+    // Co-pilot
+    new JoystickButton(m_coController, Button.kStart.value).whenHeld(new IntakeWinch_run(m_intakeWinch, Constants.Intake.intakeWinchSpeed));
+    new JoystickButton(m_coController, Button.kBack.value).whenHeld(new IntakeWinch_run(m_intakeWinch, - Constants.Intake.intakeWinchSpeed));
 
     // BASIC INTAKE
-    new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
+    // co-pilot
+    new JoystickButton(m_coController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
     //new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, 0.25 * Constants.Intake.intakeSpeed));
     
     // SHOOTER
-    new JoystickButton(m_driverController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
-    new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
+    // Co-pilot
+    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
+    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
 
     // RESET GYROSCOPE
     // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope(););

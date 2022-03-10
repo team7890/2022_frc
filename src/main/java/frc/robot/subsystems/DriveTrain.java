@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj.SPI;
 
+import frc.robot.Constants;
+
 import com.kauailabs.navx.frc.AHRS;
 
 
@@ -126,11 +128,11 @@ public class DriveTrain extends SubsystemBase {
             // This can either be STANDARD or FAST depending on your gear configuration
             Mk4SwerveModuleHelper.GearRatio.L1,
             // This is the ID of the drive motor
-            FRONT_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CanID.FRONT_LEFT_MODULE_DRIVE_MOTOR,
             // This is the ID of the steer motor
-            FRONT_LEFT_MODULE_STEER_MOTOR,
+            Constants.CanID.FRONT_LEFT_MODULE_STEER_MOTOR,
             // This is the ID of the steer encoder
-            FRONT_LEFT_MODULE_STEER_ENCODER,
+            Constants.CanID.FRONT_LEFT_MODULE_STEER_ENCODER,
             // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
             FRONT_LEFT_MODULE_STEER_OFFSET
     );
@@ -141,9 +143,9 @@ public class DriveTrain extends SubsystemBase {
                     .withSize(2, 4)
                     .withPosition(2, 0),
             Mk4SwerveModuleHelper.GearRatio.L1,
-            FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-            FRONT_RIGHT_MODULE_STEER_MOTOR,
-            FRONT_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CanID.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CanID.FRONT_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CanID.FRONT_RIGHT_MODULE_STEER_ENCODER,
             FRONT_RIGHT_MODULE_STEER_OFFSET
     );
 
@@ -152,9 +154,9 @@ public class DriveTrain extends SubsystemBase {
                     .withSize(2, 4)
                     .withPosition(4, 0),
             Mk4SwerveModuleHelper.GearRatio.L1,
-            BACK_LEFT_MODULE_DRIVE_MOTOR,
-            BACK_LEFT_MODULE_STEER_MOTOR,
-            BACK_LEFT_MODULE_STEER_ENCODER,
+            Constants.CanID.BACK_LEFT_MODULE_DRIVE_MOTOR,
+            Constants.CanID.BACK_LEFT_MODULE_STEER_MOTOR,
+            Constants.CanID.BACK_LEFT_MODULE_STEER_ENCODER,
             BACK_LEFT_MODULE_STEER_OFFSET
     );
 
@@ -163,9 +165,9 @@ public class DriveTrain extends SubsystemBase {
                     .withSize(2, 4)
                     .withPosition(6, 0),
             Mk4SwerveModuleHelper.GearRatio.L1,
-            BACK_RIGHT_MODULE_DRIVE_MOTOR,
-            BACK_RIGHT_MODULE_STEER_MOTOR,
-            BACK_RIGHT_MODULE_STEER_ENCODER,
+            Constants.CanID.BACK_RIGHT_MODULE_DRIVE_MOTOR,
+            Constants.CanID.BACK_RIGHT_MODULE_STEER_MOTOR,
+            Constants.CanID.BACK_RIGHT_MODULE_STEER_ENCODER,
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
   }

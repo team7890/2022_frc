@@ -19,8 +19,8 @@ public class Shooter extends SubsystemBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   /** Creates a new Shooter. */
   // May want to rename "DriveTrain" later
-  private TalonFX m_ShooterMotorLeft = new TalonFX(12, "FastCAN");
-  private TalonFX m_ShooterMotorRight = new TalonFX(13, "FastCAN");
+  private TalonFX m_ShooterMotorLeft = new TalonFX(Constants.CanID.ShooterLeft, "FastCAN");
+  private TalonFX m_ShooterMotorRight = new TalonFX(Constants.CanID.ShooterRight, "FastCAN");
   public Shooter() 
   {
     m_ShooterMotorLeft.configFactoryDefault();
@@ -54,8 +54,8 @@ public class Shooter extends SubsystemBase {
     //   m_ShooterMotorLeft.set(ControlMode.PercentOutput, speed_in);
     //   m_ShooterMotorRight.set(ControlMode.PercentOutput, -speed_in);
     // }
-    m_ShooterMotorLeft.set(ControlMode.PercentOutput, - speed_in);
-    m_ShooterMotorRight.set(ControlMode.PercentOutput, speed_in);
+    m_ShooterMotorLeft.set(ControlMode.PercentOutput,  speed_in);
+    m_ShooterMotorRight.set(ControlMode.PercentOutput, - speed_in);
 
     
   }

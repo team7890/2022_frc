@@ -34,7 +34,7 @@ public class Intake_run extends CommandBase {
   public void execute() 
   {
     // Ability to toggle slew rate
-    if (Constants.applySlewRate)
+    if (Constants.Intake.applySlewRate)
     {
       m_intake.runIntake(filter.calculate(dSpeed));
     }
