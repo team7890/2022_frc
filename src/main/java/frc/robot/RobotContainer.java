@@ -17,11 +17,11 @@ import frc.robot.subsystems.IntakeWinch;
 import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
 import frc.robot.commands.Shooter_run;
+import frc.robot.commands.DriveTrain_run;
 import frc.robot.commands.Index_run;
 import frc.robot.commands.Intake_run;
-import frc.robot.commands.DriveTrain_run;
 
-
+import frc.robot.commands.auto.AutoNumberOne1;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -93,7 +93,7 @@ public class RobotContainer {
     
 
 
-    // Back button zeros the gyroscope
+    // Start button zeros the gyroscope
     // Pilot
     new JoystickButton(m_driverController, Button.kStart.value)
             // No requirements because we don't need to interrupt anything
@@ -138,10 +138,12 @@ public class RobotContainer {
    */
 
 
-  // public Command getAutonomousCommand() {
-  //   return autocommand;
-  // }
 
+  public Command getAutonomousCommand() {
+    return new AutoNumberOne1(m_driveTrain);
+  }
+
+  
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
