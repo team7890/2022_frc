@@ -2,23 +2,23 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shooter;
 
-public class Index_run extends CommandBase {
-  SlewRateLimiter filter = new SlewRateLimiter(Constants.Indexer.slewRate);
+public class AutoShooter_run extends CommandBase {
+  SlewRateLimiter filter = new SlewRateLimiter(Constants.Shooter.slewRate);
   private final double dSpeed;
-  private final Indexer m_index;
-  /** Creates a new Index_runIn. */
-  public Index_run(Indexer index_in, double speed_in) {
-    m_index = index_in;
+  private final Shooter m_Shooter;
+  /** Creates a new Shooter_runIn. */
+  public AutoShooter_run(Shooter Shooter_in, double speed_in) {
+    m_Shooter = Shooter_in;
     dSpeed = speed_in;
-    addRequirements(m_index);
+    addRequirements(m_Shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +26,7 @@ public class Index_run extends CommandBase {
   @Override
   public void initialize() 
   {
-    m_index.stopIndex();
+    m_Shooter.stopShooter();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,13 +34,13 @@ public class Index_run extends CommandBase {
   public void execute() 
   {
     // Ability to toggle slew rate
-    if (Constants.Indexer.applySlewRate)
+    if (Constants.Shooter.applySlewRate)
     {
-      m_index.runIndexer(filter.calculate(dSpeed));
+      m_Shooter.runShooter(filter.calculate(dSpeed));
     }
     else
     {
-      m_index.runIndexer(dSpeed);
+      m_Shooter.runShooter(dSpeed);
     }
     
   }
@@ -49,7 +49,7 @@ public class Index_run extends CommandBase {
   @Override
   public void end(boolean interrupted) 
   {
-    m_index.stopIndex();
+    m_Shooter.stopShooter();
     filter.reset(0.0);
   }
 
@@ -60,3 +60,4 @@ public class Index_run extends CommandBase {
     return false;
   }
 }
+

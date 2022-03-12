@@ -18,7 +18,7 @@ import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
 import frc.robot.commands.Shooter_run;
 import frc.robot.commands.DriveTrain_run;
-import frc.robot.commands.Index_run;
+import frc.robot.commands.Indexer_run;
 import frc.robot.commands.Intake_run;
 
 import frc.robot.commands.auto.AutoNumberOne1;
@@ -106,10 +106,10 @@ public class RobotContainer {
   
     // THIS IS FOR THE INDEXER
     // co-pilot
-    new JoystickButton(m_coController, Button.kY.value).whenHeld(new Index_run(m_indexer, Constants.Indexer.indexSpeed));
+    new JoystickButton(m_coController, Button.kY.value).whenHeld(new Indexer_run(m_indexer, Constants.Indexer.indexSpeed));
     // REVERSE INDEXER
     // co-pilot
-    new JoystickButton(m_coController, Button.kA.value).whenHeld(new Index_run(m_indexer, - Constants.Indexer.indexSpeed));
+    new JoystickButton(m_coController, Button.kA.value).whenHeld(new Indexer_run(m_indexer, - Constants.Indexer.indexSpeed));
 
     // SET UP TO THE WINCH AND CHANGE BUTTON
     // FIXME change buttons to dpad up/down
@@ -140,10 +140,10 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand() {
-    return new AutoNumberOne1(m_driveTrain);
+    return new AutoNumberOne1(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
   }
 
-  
+
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
