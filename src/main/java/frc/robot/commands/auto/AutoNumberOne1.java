@@ -33,55 +33,51 @@ public class AutoNumberOne1 extends SequentialCommandGroup
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     // AutoDriveTrain_run(m_autoDriveTrain, joystick_Y, joystick_X, rotation)
+    // Moving and rotating
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 1.0, 0.0, 0.0).withTimeout(1.0));
 
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, -1.0).withTimeout(1.0));
 
-    addCommands(new ParallelCommandGroup
-    (
-      new AutoDriveTrain_run(m_autoDriveTrain, 0.7, -0.9, -1.0).withTimeout(1.0),
-      new IntakeWinch_run(m_autoIntakeWinch, .2).withTimeout(2),
-      new Intake_run(m_autoIntake, .9).withTimeout(2)
-    ),
-    new ParallelCommandGroup
-    (
-      new Intake_run(m_autoIntake, .9),
-      new IntakeWinch_run(m_autoIntakeWinch, -.2)
-    ).withTimeout(1.8)
+    addCommands(
+      // Moving and intaking
+      new ParallelCommandGroup
+      (
+        new AutoDriveTrain_run(m_autoDriveTrain, 0.7, -0.9, -1.0).withTimeout(1.0),
+        new IntakeWinch_run(m_autoIntakeWinch, 0.2).withTimeout(2),
+        new Intake_run(m_autoIntake, 0.9).withTimeout(2)
+      ),
+      // Intaking while moving the winch back to its original(ish) position
+      new ParallelCommandGroup
+      (
+        new Intake_run(m_autoIntake, 0.9),
+        new IntakeWinch_run(m_autoIntakeWinch, -0.2)
+      ).withTimeout(1.8)
     );
+    // Moving
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, -0.8, 0.0, -0.60).withTimeout(2));
+    // FIRE! (and move)
     addCommands(new ParallelCommandGroup
     (
-      new AutoDriveTrain_run(m_autoDriveTrain, 0.0, -.3, 0.0).withTimeout(.75),
-      new Indexer_run(m_autoIndexer, .75),
-      new Shooter_run(m_autoShooter, .3)
+      new AutoDriveTrain_run(m_autoDriveTrain, 0.0, -0.3, 0.0).withTimeout(0.75),
+      new Indexer_run(m_autoIndexer, 0.75),
+      new Shooter_run(m_autoShooter, 0.3)
     ).withTimeout(2));
 
+    // Dance!
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 0.0).withTimeout(3));
 
-    // addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.5).withTimeout(7));
+    addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.5).withTimeout(7));
 
+
+    // Reversing all movements
     addCommands
     (
       // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, -1.5).withTimeout(7),
-      new AutoDriveTrain_run(m_autoDriveTrain, 0.0, .3, 0.0).withTimeout(.75),
-      new AutoDriveTrain_run(m_autoDriveTrain, 0.8, 0.0, 0.60).withTimeout(2),
-      new AutoDriveTrain_run(m_autoDriveTrain, -0.7, 0.9, 1.0).withTimeout(1.0),
-      new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(1.0),
-      new AutoDriveTrain_run(m_autoDriveTrain, -1.0, 0.0, 0.0).withTimeout(1.0)
+      // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, .3, 0.0).withTimeout(0.75),
+      // new AutoDriveTrain_run(m_autoDriveTrain, 0.8, 0.0, 0.60).withTimeout(2),
+      // new AutoDriveTrain_run(m_autoDriveTrain, -0.7, 0.9, 1.0).withTimeout(1.0),
+      // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(1.0),
+      // new AutoDriveTrain_run(m_autoDriveTrain, -1.0, 0.0, 0.0).withTimeout(1.0)
     );
-
-    // addCommands
-    // (
-    //   new Shooter_run(m_autoShooter, .4).withTimeout(.5),
-    //   new ParallelCommandGroup
-    //   (
-    //     new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 0.0),
-    //     new Shooter_run(m_autoShooter, .4),
-    //     new Indexer_run(m_autoIndexer, .2),
-    //     new Intake_run(m_autoIntake, .2),
-    //     new IntakeWinch_run(m_autoIntakeWinch, .2)
-    //   ).withTimeout(1.0)
-    // );
   }
 }
