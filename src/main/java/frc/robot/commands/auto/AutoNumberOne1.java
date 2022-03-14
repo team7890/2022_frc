@@ -28,6 +28,8 @@ public class AutoNumberOne1 extends SequentialCommandGroup
 {
 
   /** Creates a new AutoNumberOne1. */
+  
+  // Testing auto phase
   public AutoNumberOne1(DriveTrain m_autoDriveTrain, Shooter m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch) 
   {
     // Add your commands in the addCommands() call, e.g.
@@ -67,17 +69,5 @@ public class AutoNumberOne1 extends SequentialCommandGroup
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 0.0).withTimeout(3));
 
     addCommands(new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.5).withTimeout(7));
-
-
-    // Reversing all movements
-    addCommands
-    (
-      // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, -1.5).withTimeout(7),
-      // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, .3, 0.0).withTimeout(0.75),
-      // new AutoDriveTrain_run(m_autoDriveTrain, 0.8, 0.0, 0.60).withTimeout(2),
-      // new AutoDriveTrain_run(m_autoDriveTrain, -0.7, 0.9, 1.0).withTimeout(1.0),
-      // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(1.0),
-      // new AutoDriveTrain_run(m_autoDriveTrain, -1.0, 0.0, 0.0).withTimeout(1.0)
-    );
   }
 }

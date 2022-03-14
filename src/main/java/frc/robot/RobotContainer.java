@@ -6,6 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -13,16 +16,22 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeWinch;
+import frc.robot.subsystems.ClimberLeft;
+import frc.robot.subsystems.ClimberRight;
 
 import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
+import frc.robot.commands.ClimberLeft_run;
+import frc.robot.commands.ClimberRight_run;
 import frc.robot.commands.Shooter_run;
 import frc.robot.commands.DriveTrain_run;
 import frc.robot.commands.Indexer_run;
 import frc.robot.commands.Intake_run;
-
+import frc.robot.commands.auto.AutoLeftTarmac;
 import frc.robot.commands.auto.AutoNumberOne1;
-
+import frc.robot.commands.auto.AutoRightTarmacOne;
+import frc.robot.commands.auto.ImprovedShooter;
+import frc.robot.commands.auto.IntakeAndIndexer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import com.swervedrivespecialties.swervelib.*;
@@ -31,6 +40,8 @@ import com.swervedrivespecialties.swervelib.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -46,18 +57,39 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class RobotContainer {
+  public static SendableChooser sendablechooser;
+  private SendableChooser<Command> m_auto_chooser;
+  // private static SendableChooser<AutonomousMode> autonomousModeChooser;
+
+
   private final DriveTrain m_driveTrain = new DriveTrain(2, 2);
   private final Intake m_intake = new Intake();
   private final Climber m_climber = new Climber();
+  private final ClimberLeft m_climberLeft = new ClimberLeft();
+  private final ClimberRight m_climberRight = new ClimberRight();
   private final Indexer m_indexer = new Indexer();
   private final Shooter m_shooter = new Shooter();
   private final IntakeWinch m_intakeWinch = new IntakeWinch();
+
+  
 
   private final XboxController m_coController = new XboxController(Constants.JoystickOI.coStickPort);
 
   XboxController m_driverController = new XboxController(Constants.JoystickOI.driverStickPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
     
+
+  private ShuffleboardTab tab = Shuffleboard.getTab("Auto");
+  private NetworkTableEntry autoPhase =
+       tab.add("Auto Phase", 1)
+          .getEntry();
+
+  // Retrieve the auto selection from the dashboard
+  // 1 = left tarmac auto to shoot a ball gthen go get another one, drive back and shoot ti
+  // 2 = 
+  double autoSelection = autoPhase.getDouble(1);
+  int autoSelectionInt = (int)autoSelection;
+
    // m_DriveTrain.setDefaultComm
   public RobotContainer() {
     // Set up the default command for the drivetrain.
@@ -72,9 +104,19 @@ public class RobotContainer {
             () -> -modifyAxis(m_driverController.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
     m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
+
+    m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY())));
+    m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY())));
+  
     // m_climber.setDefaultCommand(new Climber_run(m_climber, m_driverController::getRightY));
     // Configure the button bindings
     configureButtonBindings();
+
+    
+    m_auto_chooser = new SendableChooser<Command>();
+    m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    tab.add(m_auto_chooser);
   }
 
   /**
@@ -104,9 +146,14 @@ public class RobotContainer {
     
     // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_driverController::getRightY));
   
+    // Indexer + Intake
+    new JoystickButton(m_coController, Button.kX.value).whenHeld(new IntakeAndIndexer(m_indexer, m_intake));
+
     // THIS IS FOR THE INDEXER
     // co-pilot
+    
     new JoystickButton(m_coController, Button.kY.value).whenHeld(new Indexer_run(m_indexer, Constants.Indexer.indexSpeed));
+    
     // REVERSE INDEXER
     // co-pilot
     new JoystickButton(m_coController, Button.kA.value).whenHeld(new Indexer_run(m_indexer, - Constants.Indexer.indexSpeed));
@@ -126,9 +173,12 @@ public class RobotContainer {
     // Co-pilot
     new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
     new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
+    // FIXME CHANGE INPUT to trigger, if possible
+    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));
+
 
     // RESET GYROSCOPE
-    // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope(););
+    // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope());
   }
 
   /**
@@ -140,7 +190,41 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand() {
-    return new AutoNumberOne1(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    return m_auto_chooser.getSelected();
+    // return new AutoNumberOne1(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+
+    // Read command names for each auto
+    // if (autoSelection == 1)
+    // {
+    // return new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    // }
+    // else if(autoSelection == 2)
+    // {
+    // return new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    // }
+    // else
+    // {
+    // return new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    // }
+    // Shuffleboard.selectTab("Auto");
+    // sendablechooser = new SendableChooser();
+    // sendablechooser.setDefaultOption("Do Nothing", new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // sendablechooser.addOption("Drive", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // sendablechooser.addOption("Drive And Shoot", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // tab.add("sendable", sendablechooser);
+
+    // String sChosen = sendablechooser.getSelected();
+
+
+    // switch(autoSelectionInt)
+    // {
+    //   case 1:
+    //     return new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    //   case 2:
+    //     return new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    //   default:
+    //     return new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch);
+    // }
   }
 
 
@@ -148,9 +232,11 @@ public class RobotContainer {
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
+        // return (value - deadband) / (1.0 - deadband);
+        return ((value - deadband) / (1.0 - deadband))*((value - deadband) / (1.0 - deadband));
       } else {
-        return (value + deadband) / (1.0 - deadband);
+        // return (value + deadband) / (1.0 - deadband);
+        return -((value + deadband) / (1.0 - deadband))*((value + deadband) / (1.0 - deadband));
       }
     } else {
       return 0.0;

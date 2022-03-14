@@ -31,7 +31,7 @@ public class DriveTrain_run extends CommandBase {
     // FIXME this needs to only activate after the robot is powered on, not after enabling
     public void initialize(){
     
-        m_DriveTrain.zeroGyroscope();
+        // m_DriveTrain.zeroGyroscope();
 
     }
 

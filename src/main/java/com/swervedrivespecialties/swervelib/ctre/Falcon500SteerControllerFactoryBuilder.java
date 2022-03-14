@@ -137,6 +137,12 @@ public final class Falcon500SteerControllerFactoryBuilder {
                     CAN_TIMEOUT_MS
             );
 
+            // Added by 7890 to prevent jerky driving
+            motor.configNeutralDeadband(0.001); /* Configures _talon to use a neutral deadband of 0.1% */
+
+
+
+
             return new ControllerImplementation(motor,
                     sensorPositionCoefficient,
                     sensorVelocityCoefficient,
