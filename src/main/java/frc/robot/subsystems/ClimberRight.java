@@ -26,7 +26,7 @@ public class ClimberRight extends SubsystemBase {
   public void runClimberRight(double speed_in)
   {
     // m_climbMotorLeft.set(ControlMode.PercentOutput, speed_in);
-    m_climbRight.set(speed_in);
+    m_climbRight.set(-speed_in);
   }
 
   public void stopClimber()

@@ -30,6 +30,9 @@ import frc.robot.commands.Intake_run;
 import frc.robot.commands.auto.AutoLeftTarmac;
 import frc.robot.commands.auto.AutoNumberOne1;
 import frc.robot.commands.auto.AutoRightTarmacOne;
+import frc.robot.commands.auto.AutoRightTarmacOnePosTwo;
+import frc.robot.commands.auto.AutoLeftTarmacPosTwo;
+import frc.robot.commands.auto.AutoLeftTarmacMoveOut;
 import frc.robot.commands.auto.ImprovedShooter;
 import frc.robot.commands.auto.IntakeAndIndexer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -103,10 +106,10 @@ public class RobotContainer {
             () -> -modifyAxis(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_driverController.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
-    m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
+    // m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
 
-    m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY())));
-    m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY())));
+    m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY() * -0.75 )));
+    m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.75 )));
   
     // m_climber.setDefaultCommand(new Climber_run(m_climber, m_driverController::getRightY));
     // Configure the button bindings
@@ -116,6 +119,9 @@ public class RobotContainer {
     m_auto_chooser = new SendableChooser<Command>();
     m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("(pos2) Right Tarmac One", new AutoRightTarmacOnePosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("(pos2) Left Tarmac", new AutoLeftTarmacPosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("(pos1, move out) Left Tarmac", new AutoLeftTarmacMoveOut(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     tab.add(m_auto_chooser);
   }
 
@@ -171,7 +177,9 @@ public class RobotContainer {
     
     // SHOOTER
     // Co-pilot
-    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
+    // High goal shoot
+    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterHighSpeed));
+    // Low goal shoot
     new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
     // FIXME CHANGE INPUT to trigger, if possible
     new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));

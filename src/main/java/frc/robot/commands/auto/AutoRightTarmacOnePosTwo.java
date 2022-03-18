@@ -22,9 +22,9 @@ import frc.robot.subsystems.IntakeWinch;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoRightTarmacOne extends SequentialCommandGroup {
+public class AutoRightTarmacOnePosTwo extends SequentialCommandGroup {
   /** Creates a new AutoRightTarmacOne. */
-  public AutoRightTarmacOne(DriveTrain m_autoDriveTrain, Shooter m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch) {
+  public AutoRightTarmacOnePosTwo(DriveTrain m_autoDriveTrain, Shooter m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     
@@ -32,18 +32,16 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
     (
       new ParallelCommandGroup
       (
-        // Indexer and shooter run, variables are speed
-        new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.30)
+        
       ).withTimeout(2.0),
 
       // Drives, first variable is front/back, second is right/left, third is rotation
-      new AutoDriveTrain_run(m_autoDriveTrain, -0.5, -1.0, 0.0).withTimeout(1.0),
+      new AutoDriveTrain_run(m_autoDriveTrain, -0.1, -1.0, 0.0).withTimeout(1.0),
 
       new ParallelCommandGroup
       (
         // Driving, intaking, and moving the intake winch, both variables for intake related things are speed variables
-        new AutoDriveTrain_run(m_autoDriveTrain, -0.75, -1.0, 0.0).withTimeout(1.1),
+        new AutoDriveTrain_run(m_autoDriveTrain, -0.1, -1.0, 0.0).withTimeout(1.1),
         new IntakeWinch_run(m_autoIntakeWinch, 0.2).withTimeout(1.5),
         new Intake_run(m_autoIntake, 0.9).withTimeout(1.5)
       ),
@@ -53,14 +51,14 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
         // Driving, intaking, and reversing the intake winch
         new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
         new Intake_run(m_autoIntake, 0.9).withTimeout(2.0),
-        new AutoDriveTrain_run(m_autoDriveTrain, 0.75, 1.0, 0.0).withTimeout(2.0)
+        new AutoDriveTrain_run(m_autoDriveTrain, 0.35, 1.0, -0.4).withTimeout(2.0)
       ),
       
       new ParallelCommandGroup
       (
         // Shooting and indexing
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.30)
+        new Shooter_run(m_autoShooter, 0.35)
       ).withTimeout(4.0)
     );
   }
