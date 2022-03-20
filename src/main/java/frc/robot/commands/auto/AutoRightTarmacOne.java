@@ -34,16 +34,16 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
       (
         // Indexer and shooter run, variables are speed
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.30)
+        new Shooter_run(m_autoShooter, 0.45)
       ).withTimeout(2.0),
 
       // Drives, first variable is front/back, second is right/left, third is rotation
-      new AutoDriveTrain_run(m_autoDriveTrain, -0.5, -1.0, 0.0).withTimeout(1.0),
+      new AutoDriveTrain_run(m_autoDriveTrain, -0.4, -1.0, 0.0).withTimeout(1.0),
 
       new ParallelCommandGroup
       (
         // Driving, intaking, and moving the intake winch, both variables for intake related things are speed variables
-        new AutoDriveTrain_run(m_autoDriveTrain, -0.75, -1.0, 0.0).withTimeout(1.1),
+        new AutoDriveTrain_run(m_autoDriveTrain, -0.5, -1.0, 0.0).withTimeout(1.1),
         new IntakeWinch_run(m_autoIntakeWinch, 0.2).withTimeout(1.5),
         new Intake_run(m_autoIntake, 0.9).withTimeout(1.5)
       ),
@@ -53,14 +53,14 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
         // Driving, intaking, and reversing the intake winch
         new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
         new Intake_run(m_autoIntake, 0.9).withTimeout(2.0),
-        new AutoDriveTrain_run(m_autoDriveTrain, 0.75, 1.0, 0.0).withTimeout(2.0)
+        new AutoDriveTrain_run(m_autoDriveTrain, 0.5, 1.0, 0.0).withTimeout(2.0)
       ),
       
       new ParallelCommandGroup
       (
         // Shooting and indexing
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.30)
+        new Shooter_run(m_autoShooter, 0.50)
       ).withTimeout(4.0)
     );
   }

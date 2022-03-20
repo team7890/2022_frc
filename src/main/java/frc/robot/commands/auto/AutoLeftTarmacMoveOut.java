@@ -36,7 +36,7 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
       (
         // index and shoot
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.35)
+        new Shooter_run(m_autoShooter, 0.50)
       ).withTimeout(4.0),
       // Drive train, variables in AutoRightTarmacOne
       new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.7),
@@ -46,7 +46,7 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
       // WAITING 10 SECONDS
       // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 0.0).withTimeout(10),
 
-      
+
 
     
         // driving, intaking, intkae winching

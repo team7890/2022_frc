@@ -17,18 +17,18 @@ import frc.robot.Constants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ImprovedShooter extends SequentialCommandGroup {
+public class ImprovedShooterLow extends SequentialCommandGroup {
   /** Creates a new ImprovedShooter. */
-  public ImprovedShooter(Shooter m_autoShooter, Indexer m_autoIndexer) {
+  public ImprovedShooterLow(Shooter m_autoShooter, Indexer m_autoIndexer) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands
     (
       new Indexer_run(m_autoIndexer, - Constants.Indexer.indexSpeed).withTimeout(0.2),
-      new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed).withTimeout(0.3),
+      new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed).withTimeout(0.3),
       new ParallelCommandGroup
       (
-        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed),
+        new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed),
         new Indexer_run(m_autoIndexer, Constants.Indexer.indexSpeed)
       )
     );

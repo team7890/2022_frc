@@ -31,6 +31,12 @@ public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
 
     addCommands
     (
+      new ParallelCommandGroup
+      (
+        // index and shoot
+        new Indexer_run(m_autoIndexer, 0.75),
+        new Shooter_run(m_autoShooter, 0.50)
+      ).withTimeout(4.0),
       
       
       // Drive train, variables in AutoRightTarmacOne
@@ -56,7 +62,7 @@ public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
       (
         // index and shoot
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.35)
+        new Shooter_run(m_autoShooter, 0.50)
       ).withTimeout(4.0)
 
 

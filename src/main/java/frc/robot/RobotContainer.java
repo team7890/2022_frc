@@ -34,6 +34,7 @@ import frc.robot.commands.auto.AutoRightTarmacOnePosTwo;
 import frc.robot.commands.auto.AutoLeftTarmacPosTwo;
 import frc.robot.commands.auto.AutoLeftTarmacMoveOut;
 import frc.robot.commands.auto.ImprovedShooter;
+import frc.robot.commands.auto.ImprovedShooterLow;
 import frc.robot.commands.auto.IntakeAndIndexer;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -108,8 +109,8 @@ public class RobotContainer {
     ));
     // m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
 
-    m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY() * -0.75 )));
-    m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.75 )));
+    m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY() * -0.85 )));
+    m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.85 )));
   
     // m_climber.setDefaultCommand(new Climber_run(m_climber, m_driverController::getRightY));
     // Configure the button bindings
@@ -153,7 +154,7 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_driverController::getRightY));
   
     // Indexer + Intake
-    new JoystickButton(m_coController, Button.kX.value).whenHeld(new IntakeAndIndexer(m_indexer, m_intake));
+    new JoystickButton(m_coController, Button.kB.value).whenHeld(new IntakeAndIndexer(m_indexer, m_intake));
 
     // THIS IS FOR THE INDEXER
     // co-pilot
@@ -172,15 +173,17 @@ public class RobotContainer {
 
     // BASIC INTAKE
     // co-pilot
-    new JoystickButton(m_coController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
+
+    // new JoystickButton(m_coController, Button.kB.value).whenHeld(new Intake_run(m_intake, Constants.Intake.intakeSpeed));
     //new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Intake_run(m_intake, 0.25 * Constants.Intake.intakeSpeed));
     
     // SHOOTER
     // Co-pilot
+    new JoystickButton(m_coController, Button.kX.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterRevSpeed));
     // High goal shoot
-    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterHighSpeed));
+    // new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterHighSpeed));
     // Low goal shoot
-    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterSpeed));
+    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new ImprovedShooterLow(m_shooter, m_indexer));
     // FIXME CHANGE INPUT to trigger, if possible
     new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));
 
