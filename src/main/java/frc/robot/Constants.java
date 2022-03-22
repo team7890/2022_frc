@@ -43,7 +43,7 @@ public final class Constants
 
     // DriveTrain
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(341.5); // FIXME Measure and set front left steer offset
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(343.5); // FIXME Measure and set front right steer offset
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(82.6); // FIXME Measure and set front right steer offset
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(254.9); // FIXME Measure and set back left steer offset
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.2); // FIXMpublic static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(341.5); // FIXME Measure and set front left steer offset
     // public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0); // FIXME Measure and set front left steer offset
@@ -122,7 +122,7 @@ public final class Constants
         public static final double slewRate = 0.4;
         public static final int currentLimit = 40;
         public static final double shooterSpeed = 0.20;
-        public static final double shooterHighSpeed = 0.46;
+        public static final double shooterHighSpeed = 0.43;
         public static final double shooterRevSpeed = -0.25;
         public static final boolean applySlewRate = false;
     }

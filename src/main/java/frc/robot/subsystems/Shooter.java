@@ -60,8 +60,8 @@ public class Shooter extends SubsystemBase {
     // add PID controller
     m_ShooterMotorLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     m_ShooterMotorRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftController = new PIDController(0.004, 0.0, 0.0002);
-    rightController = new PIDController(0.004, 0.0, 0.0002);
+    leftController = new PIDController(0.004, 0.00001, 0.0002);
+    rightController = new PIDController(0.004, 0.00001, 0.0002);
 
     // m_ShooterMotorLeft.configSupplyCurrentLimit(40.0, 0);
 
@@ -91,12 +91,12 @@ public class Shooter extends SubsystemBase {
 
 
     // add PID controller
-    targetRPM = speed_in * 6380.0;
+    targetRPM = speed_in * 6380.0 * 3.413;
     speedActualLeft = m_ShooterMotorLeft.getSelectedSensorVelocity();
-    speedActualRight = m_ShooterMotorRight.getSelectedSensorVelocity();
-    speedTuneLeft = leftController.calculate(speedActualLeft, targetRPM);
-    speedTuneRight = rightController.calculate(speedActualRight, targetRPM);
-    SmartDashboard.putNumber("Target RPM sd", targetRPM);
+    speedActualRight = -m_ShooterMotorRight.getSelectedSensorVelocity();
+    speedTuneLeft = leftController.calculate(speedActualLeft, targetRPM) / 50.0;
+    speedTuneRight = rightController.calculate(speedActualRight, targetRPM) / 50.0;
+    SmartDashboard.putNumber("Target Ticks sd", targetRPM);
     SmartDashboard.putNumber("Speed Actual Left sd", speedActualLeft);
     SmartDashboard.putNumber("Speed Actual Right sd", speedActualRight);
     SmartDashboard.putNumber("Speed Tune Left sd", speedTuneLeft);
@@ -108,8 +108,8 @@ public class Shooter extends SubsystemBase {
     speedTuneRight_entry.setDouble(speedTuneRight);
 
     // m_ShooterMotorRight.set(ControlMode.Velocity, demand);
-    m_ShooterMotorLeft.set(ControlMode.PercentOutput,  speed_in);
-    m_ShooterMotorRight.set(ControlMode.PercentOutput, - speed_in);
+    m_ShooterMotorLeft.set(ControlMode.PercentOutput,  speed_in + speedTuneLeft);
+    m_ShooterMotorRight.set(ControlMode.PercentOutput, - (speed_in + speedTuneRight));
 
     
   }
