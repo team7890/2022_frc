@@ -113,7 +113,7 @@ public final class Constants
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
         public static final double indexRevSpeed = -0.1;
-        public static final double indexSpeed = 0.6;
+        public static final double indexSpeed = 0.8;
         public static final boolean applySlewRate = true;
     }
 
@@ -121,7 +121,7 @@ public final class Constants
     {
         public static final double slewRate = 0.4;
         public static final int currentLimit = 40;
-        public static final double shooterSpeed = 0.20;
+        public static final double shooterSpeed = 0.265;
         public static final double shooterHighSpeed = 0.43;
         public static final double shooterRevSpeed = -0.25;
         public static final boolean applySlewRate = false;

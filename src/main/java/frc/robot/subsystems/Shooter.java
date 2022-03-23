@@ -5,9 +5,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.utils.PID;
+// import frc.robot.utils.PID;
 
-import javax.management.remote.TargetedNotification;
+// import javax.management.remote.TargetedNotification;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -17,7 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.CANSparkMax.IdleMode;
@@ -60,8 +60,8 @@ public class Shooter extends SubsystemBase {
     // add PID controller
     m_ShooterMotorLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     m_ShooterMotorRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftController = new PIDController(0.004, 0.00001, 0.0002);
-    rightController = new PIDController(0.004, 0.00001, 0.0002);
+    leftController = new PIDController(0.0010, 0.00000, 0.00001);
+    rightController = new PIDController(0.0010, 0.00000, 0.00001);
 
     // m_ShooterMotorLeft.configSupplyCurrentLimit(40.0, 0);
 
@@ -96,11 +96,11 @@ public class Shooter extends SubsystemBase {
     speedActualRight = -m_ShooterMotorRight.getSelectedSensorVelocity();
     speedTuneLeft = leftController.calculate(speedActualLeft, targetRPM) / 50.0;
     speedTuneRight = rightController.calculate(speedActualRight, targetRPM) / 50.0;
-    SmartDashboard.putNumber("Target Ticks sd", targetRPM);
-    SmartDashboard.putNumber("Speed Actual Left sd", speedActualLeft);
-    SmartDashboard.putNumber("Speed Actual Right sd", speedActualRight);
-    SmartDashboard.putNumber("Speed Tune Left sd", speedTuneLeft);
-    SmartDashboard.putNumber("Speed Tune Right sd", speedTuneRight);
+    // SmartDashboard.putNumber("Target Ticks sd", targetRPM);
+    // SmartDashboard.putNumber("Speed Actual Left sd", speedActualLeft);
+    // SmartDashboard.putNumber("Speed Actual Right sd", speedActualRight);
+    // SmartDashboard.putNumber("Speed Tune Left sd", speedTuneLeft);
+    // SmartDashboard.putNumber("Speed Tune Right sd", speedTuneRight);
     targetRPM_entry.setDouble(targetRPM);
     speedActualLeft_entry.setDouble(speedActualLeft);
     speedActualRight_entry.setDouble(speedActualRight);

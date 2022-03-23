@@ -18,6 +18,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.IntakeWinch;
 import frc.robot.subsystems.ClimberLeft;
 import frc.robot.subsystems.ClimberRight;
+import frc.robot.subsystems.Sensor;
 
 import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
@@ -36,6 +37,8 @@ import frc.robot.commands.auto.AutoLeftTarmacMoveOut;
 import frc.robot.commands.auto.ImprovedShooter;
 import frc.robot.commands.auto.ImprovedShooterLow;
 import frc.robot.commands.auto.IntakeAndIndexer;
+import frc.robot.commands.auto.IntakeAndIndexerOut;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 import com.swervedrivespecialties.swervelib.*;
@@ -74,7 +77,7 @@ public class RobotContainer {
   private final Indexer m_indexer = new Indexer();
   private final Shooter m_shooter = new Shooter();
   private final IntakeWinch m_intakeWinch = new IntakeWinch();
-
+  private final Sensor m_Sensor = new Sensor();
   
 
   private final XboxController m_coController = new XboxController(Constants.JoystickOI.coStickPort);
@@ -163,7 +166,8 @@ public class RobotContainer {
     
     // REVERSE INDEXER
     // co-pilot
-    new JoystickButton(m_coController, Button.kA.value).whenHeld(new Indexer_run(m_indexer, - Constants.Indexer.indexSpeed));
+    new JoystickButton(m_coController, Button.kA.value).whenHeld(new IntakeAndIndexerOut(m_indexer, m_intake));
+    // new JoystickButton(m_coController, Button.kA.value).whenHeld(new Indexer_run(m_indexer, - Constants.Indexer.indexSpeed));
 
     // SET UP TO THE WINCH AND CHANGE BUTTON
     // FIXME change buttons to dpad up/down
