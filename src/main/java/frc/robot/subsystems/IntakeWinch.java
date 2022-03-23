@@ -20,7 +20,7 @@ public class IntakeWinch extends SubsystemBase {
 
   /** Creates a new IntakeWinch. */
   public IntakeWinch() {
-    m_intakeWinchMotor.setIdleMode(IdleMode.kCoast);
+    m_intakeWinchMotor.setIdleMode(IdleMode.kBrake);
     m_intakeWinchMotor.setSmartCurrentLimit(Constants.Intake.currentLimit);
   }
 

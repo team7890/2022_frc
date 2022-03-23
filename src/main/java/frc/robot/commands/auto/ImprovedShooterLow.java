@@ -29,7 +29,7 @@ public class ImprovedShooterLow extends SequentialCommandGroup {
       new ParallelCommandGroup
       (
         new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed),
-        new Indexer_run(m_autoIndexer, Constants.Indexer.indexSpeed)
+        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed)
       )
     );
   }
