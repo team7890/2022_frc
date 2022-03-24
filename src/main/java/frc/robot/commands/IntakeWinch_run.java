@@ -34,7 +34,7 @@ public class IntakeWinch_run extends CommandBase {
   public void execute() 
   {
     // Ability to toggle slew rate
-    if (Constants.IntakeWinch.applySlewRate)
+    if (Constants.Intake.applySlewRate)
     {
       m_intakeWinch.runIntakeWinch(filter.calculate(dSpeed));
     }

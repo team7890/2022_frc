@@ -95,18 +95,18 @@ public final class Constants
         public static final double slewRate = 0.7;
         public static final int currentLimit = 10;
         public static final double intakeSpeed = 0.9;
-        public static final double intakeWinchSpeed = 0.2;
-        public static final boolean applySlewRate = true;
+        public static final double intakeWinchSpeed = 0.6;
+        public static final boolean applySlewRate = false;
     }
 
-    public final class IntakeWinch
-    {
-        public static final double slewRate = 0.7;
-        public static final int currentLimit = 10;
-        public static final double intakeSpeed = 1.0;
-        public static final double intakeWinchSpeed = .2;
-        public static final boolean applySlewRate = true;
-    }
+    // public final class IntakeWinch
+    // {
+    //     // public static final double slewRate = 0.7;
+    //     // public static final int currentLimit = 10;
+    //     // public static final double intakeSpeed = 1.0;
+    //     // public static final double intakeWinchSpeed = .4;
+    //     // public static final boolean applySlewRate = true;
+    // }
 
     public final class Indexer
     {

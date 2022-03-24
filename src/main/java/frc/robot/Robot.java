@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.Constants.Intake;
+import frc.robot.subsystems.IntakeWinch;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 // import edu.wpi.first.networktables.NetworkTableEntry;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  * project.
  */
 public class Robot extends TimedRobot {
+  // private final IntakeWinch m_intakeWinch = new IntakeWinch();
   
 
   private Command m_autonomousCommand;
@@ -54,7 +57,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // IntakeWinch.m_intakeWinchMotor.setIdleMode(IdleMode.kCoast);
+    // m_intakeWinch.setIntakeWinchCoast();
+    // m_intakeWinchMotor.setIdleMode(IdleMode.kCoast);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -65,6 +72,9 @@ public class Robot extends TimedRobot {
 
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // IntakeWinch.m_intakeWinchMotor.setIdleMode(IdleMode.kBrake);    
+    // m_intakeWinch.setIntakeWinchBrake();
+    
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -78,6 +88,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // IntakeWinch.m_intakeWinchMotor.setIdleMode(IdleMode.kBrake);
+    // m_intakeWinch.setIntakeWinchBrake();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

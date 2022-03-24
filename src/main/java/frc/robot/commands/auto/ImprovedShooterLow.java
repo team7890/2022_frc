@@ -24,7 +24,7 @@ public class ImprovedShooterLow extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands
     (
-      new Indexer_run(m_autoIndexer, - Constants.Indexer.indexSpeed).withTimeout(0.2),
+      new Indexer_run(m_autoIndexer, - Constants.Shooter.indexShootSpeed).withTimeout(0.2),
       new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed).withTimeout(0.3),
       new ParallelCommandGroup
       (
