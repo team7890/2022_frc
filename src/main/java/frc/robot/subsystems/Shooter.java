@@ -11,6 +11,7 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import edu.wpi.first.math.controller.PIDController;
@@ -56,6 +57,9 @@ public class Shooter extends SubsystemBase {
     // enabled (boolean)| Limit(amp) (double) | Trigger Threshold(amp) (double) | Trigger Threshold Time(s)  (double)
     m_ShooterMotorLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Shooter.currentLimit, Constants.Shooter.currentLimit, 0.0));
     m_ShooterMotorRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Shooter.currentLimit, Constants.Shooter.currentLimit, 0.0));
+
+    m_ShooterMotorLeft.setNeutralMode(NeutralMode.Brake);
+    m_ShooterMotorRight.setNeutralMode(NeutralMode.Brake);
 
     // add PID controller
     m_ShooterMotorLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
