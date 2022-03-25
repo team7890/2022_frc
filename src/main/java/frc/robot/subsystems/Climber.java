@@ -16,6 +16,11 @@ import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 
 //import static frc.robot.Constants.*;
@@ -23,29 +28,28 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Climber extends SubsystemBase {
 
   //declare motor
-  // private CANSparkMax m_climbLeft = new CANSparkMax(16, MotorType.kBrushless);
-  // private CANSparkMax m_climbRight = new CANSparkMax(17, MotorType.kBrushless);
-  
-  // private TalonFX m_climbMotorLeft = new TalonFX(Constants.CanID.ClimberLeft, "rio");
-  // private TalonFX m_climbMotorRight = new TalonFX(16, "rio");
+  private CANSparkMax m_climbHigh = new CANSparkMax(8, MotorType.kBrushless);
+  private RelativeEncoder m_encoder;
 
+  private ShuffleboardTab tab = Shuffleboard.getTab("Climber");
+  private NetworkTableEntry LimitEntry = tab.add("Limit", 0).getEntry();
 
 
 
   /** Creates a new Climber. */
   public Climber() 
   {
-    // m_climbLeft.setIdleMode(IdleMode.kBrake);
-    // m_climbRight.setIdleMode(IdleMode.kBrake);
+    m_climbHigh.setIdleMode(IdleMode.kBrake);
 
-    // m_climbLeft.setSmartCurrentLimit(60);
-    // m_climbRight.setSmartCurrentLimit(60);
+    m_climbHigh.setSmartCurrentLimit(30);
+    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
-    // m_climbMotorLeft.configFactoryDefault();
-    // m_climbMotorLeft.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Climber.currentLimit, Constants.Climber.currentLimit, 0.0));
-    // m_climbMotorLeft.setNeutralMode(NeutralMode.Brake);
-    // m_climbMotorRight.configFactoryDefault();
-    // m_climbMotorRight.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.Climber.currentLimit, Constants.Climber.currentLimit, 0.0));
+    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 25);
+    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+
+    m_encoder = m_climbHigh.getEncoder();
+    m_encoder.setPosition(0.0);
 
   }
 
@@ -53,36 +57,23 @@ public class Climber extends SubsystemBase {
   public void periodic() 
   {
     // This method will be called once per scheduler run
+    LimitEntry.setDouble(m_encoder.getPosition());
+
   }
 
   public void runClimber(double speed_in)
   {
-    // m_climbMotorLeft.set(ControlMode.PercentOutput, speed_in);
+    m_climbHigh.set(speed_in);
   }
 
-  public void runClimberLeft(double speed_in)
-  {
-    // m_climbMotorLeft.set(ControlMode.PercentOutput, speed_in);
-    // m_climbLeft.set(speed_in);
-  }
-
-  public void runClimberRight(double speed_in)
-  {
-    // m_climbRight.set(speed_in);
-  }
-
-
-
-  // public void runIndexOut()
-  // {
-  //   m_indexMotor.set(-(Constants.Index.indexSpeed));
-  // }
-  
   public void stopClimber()
   {
-    // m_climbMotorLeft.set(ControlMode.PercentOutput, 0.0);
-    // m_climbLeft.set(0.0);
-    // m_climbRight.set(0.0);
+    m_climbHigh.set(0.0);
+  }
+
+  public void setClimberToCoast()
+  {
+    m_climbHigh.setIdleMode(IdleMode.kCoast);
   }
 
 //methods
