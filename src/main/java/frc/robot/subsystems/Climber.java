@@ -43,9 +43,10 @@ public class Climber extends SubsystemBase {
 
     m_climbHigh.setSmartCurrentLimit(30);
     m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    // this.setClimberBackLimitON();
+    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
 
-    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 25);
+    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 26);
     m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
 
     m_encoder = m_climbHigh.getEncoder();
@@ -74,6 +75,20 @@ public class Climber extends SubsystemBase {
   public void setClimberToCoast()
   {
     m_climbHigh.setIdleMode(IdleMode.kCoast);
+  }
+
+  public void setClimberToBrake() {
+    m_climbHigh.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void setClimberBackLimitOFF() {
+    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
+    m_climbHigh.burnFlash();
+  }
+
+  public void setClimberBackLimitON() {
+    m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    m_climbHigh.burnFlash();
   }
 
 //methods

@@ -155,8 +155,9 @@ public class RobotContainer {
     // CLIMBER
     
     // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_driverController::getRightY));
-    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, 0.17));
-    new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Climber_run(m_climber, -0.17));
+    new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Climber_run(m_climber, 0.22));
+    new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
+    // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));
   
     // Indexer + Intake
     new JoystickButton(m_coController, Button.kB.value).whenHeld(new IntakeAndIndexer(m_indexer, m_intake));
