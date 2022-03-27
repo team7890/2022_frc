@@ -38,6 +38,7 @@ import frc.robot.commands.auto.ImprovedShooter;
 import frc.robot.commands.auto.ImprovedShooterLow;
 import frc.robot.commands.auto.IntakeAndIndexer;
 import frc.robot.commands.auto.IntakeAndIndexerOut;
+import frc.robot.commands.auto.AutoLeftTarmacTwoBall;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -121,7 +122,7 @@ public class RobotContainer {
 
     
     m_auto_chooser = new SendableChooser<Command>();
-    m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmac(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmacTwoBall(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     m_auto_chooser.addOption("(pos2) Right Tarmac One", new AutoRightTarmacOnePosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     m_auto_chooser.addOption("(pos2) Left Tarmac", new AutoLeftTarmacPosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));

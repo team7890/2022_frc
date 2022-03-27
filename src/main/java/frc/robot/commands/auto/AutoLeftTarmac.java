@@ -18,6 +18,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeWinch;
+import frc.robot.Constants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -36,7 +37,7 @@ public class AutoLeftTarmac extends SequentialCommandGroup {
       (
         // index and shoot
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.50)
+        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
       ).withTimeout(4.0),
       
       
@@ -63,7 +64,7 @@ public class AutoLeftTarmac extends SequentialCommandGroup {
       (
         // index and shoot
         new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, 0.50)
+        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
       ).withTimeout(4.0)
 
 
