@@ -73,13 +73,13 @@ public class AutoLeftTarmacTwoBall extends SequentialCommandGroup {
         // new AutoDriveTrain_run(m_autoDriveTrain, -1.0, 0.35, 0.0).withTimeout(1.0),
         new IntakeWinch_run(m_autoIntakeWinch, 0.2).withTimeout(1.5),
         new Intake_run(m_autoIntake, 0.9).withTimeout(1.5),
-        new AutoDriveTrain_run(m_autoDriveTrain, -0.95, -1.0, 0.0).withTimeout(1.0)
+        new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 1.0, 0.0).withTimeout(1.0)
       ),
 
       new ParallelCommandGroup
       (
         // intake, intake winch, drive
-        new AutoDriveTrain_run(m_autoDriveTrain, 0.95, 1.0, 0.0).withTimeout(1.0),
+        new AutoDriveTrain_run(m_autoDriveTrain, 0.95, -1.0, 0.0).withTimeout(1.0),
 
         new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
         new Intake_run(m_autoIntake, 0.9).withTimeout(2.0)
