@@ -19,6 +19,9 @@ import frc.robot.subsystems.IntakeWinch;
 import frc.robot.subsystems.ClimberLeft;
 import frc.robot.subsystems.ClimberRight;
 import frc.robot.subsystems.Sensor;
+import frc.robot.subsystems.Shooter2;
+import frc.robot.subsystems.Shooter2tilt;
+// import frc.robot.subsystems.WindmillClimber;
 
 import frc.robot.commands.IntakeWinch_run;
 import frc.robot.commands.Climber_run;
@@ -39,6 +42,9 @@ import frc.robot.commands.auto.ImprovedShooterLow;
 import frc.robot.commands.auto.IntakeAndIndexer;
 import frc.robot.commands.auto.IntakeAndIndexerOut;
 import frc.robot.commands.auto.AutoLeftTarmacTwoBall;
+import frc.robot.commands.Shooter_run2;
+import frc.robot.commands.Shooter_run2tilt;
+// import frc.robot.commands.WindmillClimber_run;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -77,8 +83,11 @@ public class RobotContainer {
   private final ClimberRight m_climberRight = new ClimberRight();
   private final Indexer m_indexer = new Indexer();
   private final Shooter m_shooter = new Shooter();
+  private final Shooter2tilt m_shooter2tilt = new Shooter2tilt();
+  private final Shooter2 m_shooter2 = new Shooter2();
   private final IntakeWinch m_intakeWinch = new IntakeWinch();
   private final Sensor m_Sensor = new Sensor();
+  // private final WindmillClimber m_windmill = new WindmillClimber();
   
 
   private final XboxController m_coController = new XboxController(Constants.JoystickOI.coStickPort);
@@ -113,8 +122,18 @@ public class RobotContainer {
     ));
     // m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
 
+
+
+
+    // OLD CLIMBER
     m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY() * -0.85 )));
     m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.85 )));
+
+
+
+
+    // m_windmill.setDefaultCommand(new WindmillClimber_run(m_windmill, () -> modifyAxis(m_coController.getLeftY() * 1.0 )));
+    // m_climberRight.setDefaultCommand(new WindmillClimber_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.85 )));
   
     // m_climber.setDefaultCommand(new Climber_run(m_climber, m_driverController::getRightY));
     // Configure the button bindings
@@ -158,6 +177,11 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, m_driverController::getRightY));
     new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Climber_run(m_climber, 0.22));
     new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
+
+    new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.1));
+    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, 0.15));
+    new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.1));
+
     // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));
   
     // Indexer + Intake
