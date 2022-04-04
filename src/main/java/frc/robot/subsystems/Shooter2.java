@@ -11,6 +11,7 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -71,6 +72,9 @@ public class Shooter2 extends SubsystemBase {
 
     // m_ShooterMotor.setIdleMode(IdleMode.kCoast);
     // m_ShooterMotor.setSmartCurrentLimit(Constants.Shooter.currentLimit);
+    
+    // m_ShooterMotorRight2.follow(m_ShooterMotorLeft2);
+    // m_ShooterMotorRight2.setInverted(InvertType.OpposeMaster);
 
   }
 

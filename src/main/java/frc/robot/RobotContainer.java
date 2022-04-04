@@ -179,7 +179,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
 
     new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.1));
-    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, 0.15));
+    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, 0.95));
     new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.1));
 
     // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));

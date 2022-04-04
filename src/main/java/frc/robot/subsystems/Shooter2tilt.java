@@ -14,6 +14,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+// import com.ctre.phoenix.motorcontrol.can.TalonFX.;
+
 import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,19 +35,21 @@ public class Shooter2tilt extends SubsystemBase {
   //FIXME change canID to constatnt
 
   private TalonFX m_ShooterMotorTilt = new TalonFX(14, "rio");
+
+
   // private TalonFX m_ShooterMotorRight = new TalonFX(Constants.CanID.ShooterRight, "FastCAN");
 
   // add PID controller
-  // private double speedActualLeft;
+  private double posTilt;
   // private double speedActualRight;
   // private double speedTuneLeft;
   // private double speedTuneRight;
   // private PIDController leftController;
   // private PIDController rightController;
   // private double targetRPM;
-  // private ShuffleboardTab tab = Shuffleboard.getTab("Shooter PID");
+  private ShuffleboardTab tab = Shuffleboard.getTab("ShooterTilt PID");
   // private NetworkTableEntry targetRPM_entry = tab.add("Target RPM", 0).getEntry();
-  // private NetworkTableEntry speedActualLeft_entry = tab.add("Speed Actual Left", 0).getEntry();
+  private NetworkTableEntry posTilt_entry = tab.add("Pos Tilt", 0).getEntry();
   // private NetworkTableEntry speedActualRight_entry = tab.add("Speed Actual Right", 0).getEntry();
   // private NetworkTableEntry speedTuneLeft_entry = tab.add("Speed Tune Left", 0).getEntry();
   // private NetworkTableEntry speedTuneRight_entry = tab.add("Speed Tune Right", 0).getEntry();
@@ -54,6 +58,9 @@ public class Shooter2tilt extends SubsystemBase {
   public Shooter2tilt() 
   {
     m_ShooterMotorTilt.configFactoryDefault();
+
+    
+
     // m_ShooterMotorRight.configFactoryDefault();
 
     // enabled (boolean)| Limit(amp) (double) | Trigger Threshold(amp) (double) | Trigger Threshold Time(s)  (double)
@@ -73,6 +80,13 @@ public class Shooter2tilt extends SubsystemBase {
 
     // m_ShooterMotor.setIdleMode(IdleMode.kCoast);
     // m_ShooterMotor.setSmartCurrentLimit(Constants.Shooter.currentLimit);
+
+//FIXME uncomment when ready
+    // m_ShooterMotorTilt.configForwardSoftLimitThreshold(10000, 0);
+    // m_ShooterMotorTilt.configReverseSoftLimitThreshold(-10000, 0);
+    // m_ShooterMotorTilt.configForwardSoftLimitEnable(true, 0);
+    // m_ShooterMotorTilt.configReverseSoftLimitEnable(true, 0);
+    m_ShooterMotorTilt.setSelectedSensorPosition(0.0);
 
   }
 
@@ -98,12 +112,12 @@ public class Shooter2tilt extends SubsystemBase {
 
     // add PID controller
     // targetRPM = speed_in * 6380.0 * 3.413;
-    // speedActualLeft = m_ShooterMotorTilt.getSelectedSensorVelocity();
+    posTilt = m_ShooterMotorTilt.getSelectedSensorPosition();
     // speedActualRight = -m_ShooterMotorRight.getSelectedSensorVelocity();
     // speedTuneLeft = leftController.calculate(speedActualLeft, targetRPM) / 50.0;
     // speedTuneRight = rightController.calculate(speedActualRight, targetRPM) / 50.0;
     // targetRPM_entry.setDouble(targetRPM);
-    // speedActualLeft_entry.setDouble(speedActualLeft);
+    posTilt_entry.setDouble(posTilt);
     // speedActualRight_entry.setDouble(speedActualRight);
     // speedTuneLeft_entry.setDouble(speedTuneLeft);
     // speedTuneRight_entry.setDouble(speedTuneRight);
