@@ -58,6 +58,7 @@ public final class Constants
     public final class CanID
 
     {
+        public static final int Climber = 8;
         public static final int Intake = 10;
         public final static int Indexer = 11;
         public static final int ShooterRight = 12;

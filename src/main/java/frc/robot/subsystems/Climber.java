@@ -28,7 +28,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 public class Climber extends SubsystemBase {
 
   //declare motor
-  private CANSparkMax m_climbHigh = new CANSparkMax(8, MotorType.kBrushless);
+  private CANSparkMax m_climbHigh = new CANSparkMax(Constants.CanID.Climber, MotorType.kBrushless);
   private RelativeEncoder m_encoder;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Climber");

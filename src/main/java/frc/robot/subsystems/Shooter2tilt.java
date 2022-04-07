@@ -34,7 +34,7 @@ public class Shooter2tilt extends SubsystemBase {
   // May want to rename "DriveTrain" later
   //FIXME change canID to constatnt
 
-  private TalonFX m_ShooterMotorTilt = new TalonFX(14, "rio");
+  private TalonFX m_ShooterMotorTilt = new TalonFX(14, "FastCAN");
 
 
   // private TalonFX m_ShooterMotorRight = new TalonFX(Constants.CanID.ShooterRight, "FastCAN");

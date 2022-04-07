@@ -31,8 +31,8 @@ public class Shooter2 extends SubsystemBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Intake.slewRate);
   /** Creates a new Shooter. */
   // May want to rename "DriveTrain" later
-  private TalonFX m_ShooterMotorLeft2 = new TalonFX(Constants.CanID.WindmillLeft, "rio");
-  private TalonFX m_ShooterMotorRight2 = new TalonFX(Constants.CanID.WindmillRight, "rio");
+  private TalonFX m_ShooterMotorLeft2 = new TalonFX(Constants.CanID.WindmillLeft, "FastCAN");
+  private TalonFX m_ShooterMotorRight2 = new TalonFX(Constants.CanID.WindmillRight, "FastCAN");
 
   // add PID controller
   private double speedActualLeft;

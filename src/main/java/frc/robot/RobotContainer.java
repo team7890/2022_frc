@@ -116,16 +116,13 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_driveTrain.setDefaultCommand(new DriveTrain_run(
             m_driveTrain,
-            () -> -modifyAxis(m_driverController.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_driverController.getRightX()) * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxisDrive(m_driverController.getLeftY()) * 0.75 * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxisDrive(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_driverController.getRightX()) * 0.5 * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
     // m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
 
 
-
-
-    // OLD CLIMBER
     m_climberLeft.setDefaultCommand(new ClimberLeft_run(m_climberLeft, () -> modifyAxis(m_coController.getLeftY() * -0.85 )));
     m_climberRight.setDefaultCommand(new ClimberRight_run(m_climberRight, () -> modifyAxis(m_coController.getRightY() * 0.85 )));
 
@@ -179,7 +176,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
 
     new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.1));
-    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, 0.95));
+    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, -0.6));
     new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.1));
 
     // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));
@@ -292,6 +289,19 @@ public class RobotContainer {
 
     // Square the axis
     value = Math.copySign(value * value, value);
+
+    return value;
+  }
+
+  private static double modifyAxisDrive(double value) {
+    // Deadband
+    value = deadband(value, 0.05);
+
+    // Square the axis
+    // value = Math.copySign(value * value, value);
+
+    // Cube axis
+    value = value * value * value;
 
     return value;
   }
