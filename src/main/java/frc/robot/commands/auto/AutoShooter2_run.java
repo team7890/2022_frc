@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Shooter2tilt;
 import frc.robot.subsystems.Shooter2;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Limelight;
 
 // shuffleboard and network tables for debug
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -18,27 +19,34 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class AutoShooter2_run extends CommandBase {
 
-  private ShuffleboardTab tab = Shuffleboard.getTab("ShooterTilt PID");
+  // private ShuffleboardTab tab = Shuffleboard.getTab("ShooterTilt PID");
   // private NetworkTableEntry targetRPM_entry = tab.add("Target RPM", 0).getEntry();
-  private NetworkTableEntry m_ty_entry = tab.add("LL ty", 0).getEntry();
+  // private NetworkTableEntry m_ty_entry = tab.add("LL ty", 0).getEntry();
 
 
   private final Shooter2tilt m_shooter2tilt;
   private final Shooter2 m_shooter2;
-  private final double m_ty;
-  private final double m_ta;
+  private final Limelight m_limelight;
+  // private final double m_ty;
+  // private final double m_ta;
   
   private double hood_position;
   private double shooter_speed;
+  private double m_ty;
+  private double m_ta;
 
   /** Creates a new AutoShooter2_run. */
-  public AutoShooter2_run(Shooter2tilt m_shooter2tilt_in, Shooter2 m_shooter2_in, double m_ty_in, double m_ta_in) {
+  // public AutoShooter2_run(Shooter2tilt m_shooter2tilt_in, Shooter2 m_shooter2_in, double m_ty_in, double m_ta_in) {
+  //   m_shooter2tilt = m_shooter2tilt_in;
+  //   m_shooter2 = m_shooter2_in;
+  //   m_ty = m_ty_in;
+  //   m_ta = m_ta_in;
+  public AutoShooter2_run(Shooter2tilt m_shooter2tilt_in, Shooter2 m_shooter2_in, Limelight m_limelight_in) {
     m_shooter2tilt = m_shooter2tilt_in;
     m_shooter2 = m_shooter2_in;
-    m_ty = m_ty_in;
-    m_ta = m_ta_in;
-
-    addRequirements(m_shooter2tilt, m_shooter2);
+    m_limelight = m_limelight_in;
+  
+  addRequirements(m_shooter2tilt, m_shooter2, m_limelight);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -49,6 +57,8 @@ public class AutoShooter2_run extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_ty = m_limelight.getTargetVerticalAngle();
+    m_ta = m_limelight.getArea();
     // first set hood position from experiments
     if (m_ty > 7) {
       hood_position = 0;
@@ -77,7 +87,7 @@ public class AutoShooter2_run extends CommandBase {
     m_shooter2tilt.tiltToPosition(hood_position);
     m_shooter2.runShooter(shooter_speed);
 
-    m_ty_entry.setDouble(m_ty);
+    // m_ty_entry.setDouble(m_ty);
   }
 
   // Called once the command ends or is interrupted.

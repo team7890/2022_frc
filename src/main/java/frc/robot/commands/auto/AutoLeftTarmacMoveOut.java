@@ -8,13 +8,15 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.commands.auto.AutoDriveTrain_run;
-import frc.robot.commands.Shooter_run;
+import frc.robot.commands.Shooter_run2;
+import frc.robot.commands.Shooter_run2tiltToPosition;
 import frc.robot.commands.Indexer_run;
-import frc.robot.commands.Intake_run;
-import frc.robot.commands.IntakeWinch_run;
+// import frc.robot.commands.Intake_run;
+// import frc.robot.commands.IntakeWinch_run;
 
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter2;
+import frc.robot.subsystems.Shooter2tilt;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeWinch;
@@ -24,7 +26,7 @@ import frc.robot.Constants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
   /** Creates a new AutoLeftTarmac. */
-  public AutoLeftTarmacMoveOut(DriveTrain m_autoDriveTrain, Shooter m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch)
+  public AutoLeftTarmacMoveOut(DriveTrain m_autoDriveTrain, Shooter2 m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch, Shooter2tilt m_autoShooterTilt)
   {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -35,10 +37,12 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
       new ParallelCommandGroup
       (
         // index and shoot
-        new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
+        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
+        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterHighSpeed),
+        new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
       ).withTimeout(4.0),
       // Drive train, variables in AutoRightTarmacOne
+
       new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.7),
 
 
@@ -50,7 +54,8 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
 
     
         // driving, intaking, intkae winching
-      new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.0)
+ 
+        new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.0)
      
       
 

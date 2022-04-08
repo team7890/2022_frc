@@ -7,10 +7,12 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.commands.Shooter_run;
+import frc.robot.commands.Shooter_run2;
+import frc.robot.commands.Shooter_run2tiltToPosition;
 import frc.robot.commands.Indexer_run;
 
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter2;
+import frc.robot.subsystems.Shooter2tilt;
 import frc.robot.subsystems.Indexer;
 
 import frc.robot.Constants;
@@ -19,17 +21,21 @@ import frc.robot.Constants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ImprovedShooterLow extends SequentialCommandGroup {
   /** Creates a new ImprovedShooter. */
-  public ImprovedShooterLow(Shooter m_autoShooter, Indexer m_autoIndexer) {
+  public ImprovedShooterLow(Shooter2 m_autoShooter, Indexer m_autoIndexer, Shooter2tilt m_autoShooterTilt) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands
     (
-      new Indexer_run(m_autoIndexer, - Constants.Shooter.indexShootSpeed).withTimeout(0.2),
-      new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed).withTimeout(0.3),
+      new ParallelCommandGroup(
+        new Indexer_run(m_autoIndexer, - Constants.Indexer.indexRevSpeed).withTimeout(0.1),
+        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterLowSpeed).withTimeout(0.1),
+        new Shooter_run2tiltToPosition(m_autoShooterTilt, Constants.Shooter.shooterLowHood).withTimeout(0.1)
+      ),
       new ParallelCommandGroup
       (
-        new Shooter_run(m_autoShooter, Constants.Shooter.shooterSpeed),
-        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed)
+        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterLowSpeed),
+        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
+        new Shooter_run2tiltToPosition(m_autoShooterTilt, Constants.Shooter.shooterLowHood)
       )
     );
   }

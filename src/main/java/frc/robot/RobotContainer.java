@@ -142,11 +142,16 @@ public class RobotContainer {
 
     
     m_auto_chooser = new SendableChooser<Command>();
-    m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmacTwoBall(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
-    m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
-    m_auto_chooser.addOption("(pos2) Right Tarmac One", new AutoRightTarmacOnePosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
-    m_auto_chooser.addOption("(pos2) Left Tarmac", new AutoLeftTarmacPosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
-    m_auto_chooser.addOption("(pos1, move out) Left Tarmac", new AutoLeftTarmacMoveOut(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmacTwoBall(m_driveTrain, m_shooter2, m_indexer, m_intake, m_intakeWinch, m_shooter2tilt, m_limelight));
+    m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter2, m_indexer, m_intake, m_intakeWinch, m_shooter2tilt, m_limelight));
+    m_auto_chooser.addOption("(pos2) Right Tarmac One", new AutoRightTarmacOnePosTwo(m_driveTrain, m_shooter2, m_indexer, m_intake, m_intakeWinch, m_shooter2tilt, m_limelight));
+    m_auto_chooser.addOption("(pos2) Left Tarmac", new AutoLeftTarmacPosTwo(m_driveTrain, m_shooter2, m_indexer, m_intake, m_intakeWinch, m_shooter2tilt, m_limelight));
+    m_auto_chooser.addOption("(pos1, move out) Left Tarmac", new AutoLeftTarmacMoveOut(m_driveTrain, m_shooter2, m_indexer, m_intake, m_intakeWinch, m_shooter2tilt));
+    // m_auto_chooser.addOption("Left Tarmac", new AutoLeftTarmacTwoBall(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // m_auto_chooser.addOption("Right Tarmac One", new AutoRightTarmacOne(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // m_auto_chooser.addOption("(pos2) Right Tarmac One", new AutoRightTarmacOnePosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // m_auto_chooser.addOption("(pos2) Left Tarmac", new AutoLeftTarmacPosTwo(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
+    // m_auto_chooser.addOption("(pos1, move out) Left Tarmac", new AutoLeftTarmacMoveOut(m_driveTrain, m_shooter, m_indexer, m_intake, m_intakeWinch));
     tab.add(m_auto_chooser);
   }
 
@@ -179,8 +184,9 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Climber_run(m_climber, 0.22));
     new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
 
-    new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.04));
-    new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, -0.6));
+    // NEW SHOOTER -- DRIVER STICK TEST BUTTONS
+    // new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.04));
+    // new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, -0.6));
     new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.04));
 
     // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));
@@ -216,7 +222,7 @@ public class RobotContainer {
     // High goal shoot
     // new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterHighSpeed));
     // Low goal shoot
-    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new ImprovedShooterLow(m_shooter, m_indexer));
+    new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new ImprovedShooterLow(m_shooter2, m_indexer, m_shooter2tilt));
     // FIXME CHANGE INPUT to trigger, if possible
     // --- next line for old shooter
     // new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));

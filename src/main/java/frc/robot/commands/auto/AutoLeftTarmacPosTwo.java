@@ -8,16 +8,20 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.commands.auto.AutoDriveTrain_run;
-import frc.robot.commands.Shooter_run;
+import frc.robot.commands.Shooter_run2;
+import frc.robot.commands.Shooter_run2tiltToPosition;
 import frc.robot.commands.Indexer_run;
 import frc.robot.commands.Intake_run;
 import frc.robot.commands.IntakeWinch_run;
+import frc.robot.commands.auto.AutoHoodShoot;
 
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter2;
+import frc.robot.subsystems.Shooter2tilt;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeWinch;
+import frc.robot.subsystems.Limelight;
 import frc.robot.Constants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -25,7 +29,7 @@ import frc.robot.Constants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
   /** Creates a new AutoLeftTarmac. */
-  public AutoLeftTarmacPosTwo(DriveTrain m_autoDriveTrain, Shooter m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch)
+  public AutoLeftTarmacPosTwo(DriveTrain m_autoDriveTrain, Shooter2 m_autoShooter, Indexer m_autoIndexer, Intake m_autoIntake, IntakeWinch m_autoIntakeWinch, Shooter2tilt m_autoShooterTilt, Limelight m_autoLimelight)
   {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
@@ -35,8 +39,9 @@ public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
       new ParallelCommandGroup
       (
         // index and shoot
-        new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
+        new Indexer_run(m_autoIndexer, Constants.Shooter.shooterHighSpeed),
+        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterHighSpeed),
+        new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
       ).withTimeout(4.0),
       
       
@@ -53,18 +58,17 @@ public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
 
       new ParallelCommandGroup
       (
-        // intake, intake winch, drive
+        // intake, intake winch
         new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
-        new Intake_run(m_autoIntake, 0.9).withTimeout(2.0),
-        new AutoDriveTrain_run(m_autoDriveTrain, .95, -1.0, 0.25).withTimeout(1.5)
+        new Intake_run(m_autoIntake, 0.9).withTimeout(2.0)
+        // new AutoDriveTrain_run(m_autoDriveTrain, .95, -1.0, 0.25).withTimeout(1.5)
       ),
 
-      new ParallelCommandGroup
-      (
+ 
         // index and shoot
-        new Indexer_run(m_autoIndexer, 0.75),
-        new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
-      ).withTimeout(4.0)
+        // new Indexer_run(m_autoIndexer, 0.75),
+        // new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
+      new AutoHoodShoot(m_autoLimelight, m_autoShooter, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
 
 
       // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(2.0),

@@ -39,10 +39,10 @@ public class AutoHoodShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new Indexer_run(m_indexer, Constants.Indexer.indexRevSpeed).withTimeout(0.1),
-      new DriveAlignLimelight(m_limelight, m_drivetrain).withTimeout(0.35),
+      new DriveAlignLimelight(m_limelight, m_drivetrain).withTimeout(0.5),
       new ParallelCommandGroup(
         new Indexer_run(m_indexer, Constants.Shooter.indexShootSpeed),
-        new AutoShooter2_run(m_shooter2tilt, m_shooter2, m_limelight.getTargetVerticalAngle(), m_limelight.getArea())
+        new AutoShooter2_run(m_shooter2tilt, m_shooter2, m_limelight)
       )
     );
   }
