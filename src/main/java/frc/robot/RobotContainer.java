@@ -21,6 +21,7 @@ import frc.robot.subsystems.ClimberRight;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Shooter2;
 import frc.robot.subsystems.Shooter2tilt;
+import frc.robot.subsystems.Limelight;
 // import frc.robot.subsystems.WindmillClimber;
 
 import frc.robot.commands.IntakeWinch_run;
@@ -44,6 +45,8 @@ import frc.robot.commands.auto.IntakeAndIndexerOut;
 import frc.robot.commands.auto.AutoLeftTarmacTwoBall;
 import frc.robot.commands.Shooter_run2;
 import frc.robot.commands.Shooter_run2tilt;
+import frc.robot.commands.DriveAlignLimelight;
+import frc.robot.commands.auto.AutoHoodShoot;
 // import frc.robot.commands.WindmillClimber_run;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -87,12 +90,13 @@ public class RobotContainer {
   private final Shooter2 m_shooter2 = new Shooter2();
   private final IntakeWinch m_intakeWinch = new IntakeWinch();
   private final Sensor m_Sensor = new Sensor();
+  private final Limelight m_limelight = new Limelight();
   // private final WindmillClimber m_windmill = new WindmillClimber();
   
 
   private final XboxController m_coController = new XboxController(Constants.JoystickOI.coStickPort);
 
-  XboxController m_driverController = new XboxController(Constants.JoystickOI.driverStickPort);
+  private final XboxController m_driverController = new XboxController(Constants.JoystickOI.driverStickPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
     
 
@@ -116,7 +120,7 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_driveTrain.setDefaultCommand(new DriveTrain_run(
             m_driveTrain,
-            () -> -modifyAxisDrive(m_driverController.getLeftY()) * 0.75 * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxisDrive(m_driverController.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxisDrive(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_driverController.getRightX()) * 0.5 * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
@@ -175,9 +179,9 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kY.value).whenHeld(new Climber_run(m_climber, 0.22));
     new JoystickButton(m_driverController, Button.kX.value).whenHeld(new Climber_run(m_climber, -0.17));
 
-    new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.1));
+    new JoystickButton(m_driverController, Button.kB.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, -0.04));
     new JoystickButton(m_driverController, Button.kA.value).whenHeld(new Shooter_run2(m_shooter2, -0.6));
-    new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.1));
+    new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Shooter_run2tilt(m_shooter2tilt, 0.04));
 
     // new JoystickButton(m_driverController, Button.kBack.value).whenHeld(new Climber_run(m_climber, -0.10));
   
@@ -214,11 +218,16 @@ public class RobotContainer {
     // Low goal shoot
     new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new ImprovedShooterLow(m_shooter, m_indexer));
     // FIXME CHANGE INPUT to trigger, if possible
-    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));
-
+    // --- next line for old shooter
+    // new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));
+    // --- next line for new shooter
+    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new AutoHoodShoot(m_limelight, m_shooter2, m_shooter2tilt, m_driveTrain, m_indexer));
 
     // RESET GYROSCOPE
     // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope());
+
+    // HOODED SHOOTER TESTING
+    new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new DriveAlignLimelight(m_limelight, m_driveTrain));
   }
 
   /**

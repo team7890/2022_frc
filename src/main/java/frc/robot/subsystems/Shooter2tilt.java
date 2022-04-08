@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
+
+import java.lang.Math;
 // import frc.robot.utils.PID;
 
 // import javax.management.remote.TargetedNotification;
@@ -15,11 +15,16 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 // import com.ctre.phoenix.motorcontrol.can.TalonFX.;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.networktables.NetworkTableEntry;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // import com.revrobotics.CANSparkMax;
@@ -34,13 +39,17 @@ public class Shooter2tilt extends SubsystemBase {
   // May want to rename "DriveTrain" later
   //FIXME change canID to constatnt
 
-  private TalonFX m_ShooterMotorTilt = new TalonFX(14, "FastCAN");
+  private TalonFX m_ShooterMotorTilt = new TalonFX(Constants.CanID.ShooterTilt, "FastCAN");
+
+  private final DigitalInput m_Switch0 = new DigitalInput(0);
 
 
   // private TalonFX m_ShooterMotorRight = new TalonFX(Constants.CanID.ShooterRight, "FastCAN");
 
   // add PID controller
   private double posTilt;
+  private double error;
+  private double control;
   // private double speedActualRight;
   // private double speedTuneLeft;
   // private double speedTuneRight;
@@ -53,7 +62,6 @@ public class Shooter2tilt extends SubsystemBase {
   // private NetworkTableEntry speedActualRight_entry = tab.add("Speed Actual Right", 0).getEntry();
   // private NetworkTableEntry speedTuneLeft_entry = tab.add("Speed Tune Left", 0).getEntry();
   // private NetworkTableEntry speedTuneRight_entry = tab.add("Speed Tune Right", 0).getEntry();
-
 
   public Shooter2tilt() 
   {
@@ -71,7 +79,19 @@ public class Shooter2tilt extends SubsystemBase {
     // m_ShooterMotorRight.setNeutralMode(NeutralMode.Brake);
 
     // add PID controller
-    m_ShooterMotorTilt.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    m_ShooterMotorTilt.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);//, 0, 20);
+    m_ShooterMotorTilt.configNeutralDeadband(0.0005);
+    // m_ShooterMotorTilt.configNominalOutputForward(0);
+    // m_ShooterMotorTilt.configNominalOutputReverse(0);
+    // m_ShooterMotorTilt.configPeakOutputForward(0.15);
+    // m_ShooterMotorTilt.configPeakOutputReverse(-0.15);
+    // // m_ShooterMotorTilt.configAllowableClosedloopError(0,0,0);
+    // m_ShooterMotorTilt.config_kF(0, 0);
+    // m_ShooterMotorTilt.config_kP(0, 0.015);
+    // m_ShooterMotorTilt.config_kD(0, 0.00001);
+    // m_ShooterMotorTilt.config_kI(0, 0);
+    // m_ShooterMotorTilt.setSensorPhase(false);
+    // m_ShooterMotorTilt.setInverted(true);
     // m_ShooterMotorRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     // leftController = new PIDController(0.0010, 0.00000, 0.00001);
     // rightController = new PIDController(0.0010, 0.00000, 0.00001);
@@ -123,8 +143,25 @@ public class Shooter2tilt extends SubsystemBase {
     // speedTuneRight_entry.setDouble(speedTuneRight);
 
     // m_ShooterMotorRight.set(ControlMode.Velocity, demand);
-    m_ShooterMotorTilt.set(ControlMode.PercentOutput,  speed_in);
+
+    // if hood is moving back down and you hit the limit switch, don't let motor drive any farther
+    if (speed_in > 0.0) {
+      if (!m_Switch0.get()) {
+        m_ShooterMotorTilt.set(ControlMode.PercentOutput, 0.0);
+      }
+      else {
+        m_ShooterMotorTilt.set(ControlMode.PercentOutput, speed_in);
+      }
+    }
+    else {
+      m_ShooterMotorTilt.set(ControlMode.PercentOutput, speed_in);
+    }
     // m_ShooterMotorRight.set(ControlMode.PercentOutput, (speed_in + speedTuneRight));
+
+    // when the switch is hit, reset the tilt encoder
+    if (!m_Switch0.get()) {
+      resetShooterTiltEncoder();
+    }
 
     
   }
@@ -132,9 +169,46 @@ public class Shooter2tilt extends SubsystemBase {
   // {
   //   m_ShooterMotor.set(-(Constants.Shooter.ShooterSpeed));
   // }
+
   public void stopShooter()
   {
     m_ShooterMotorTilt.set(ControlMode.PercentOutput, 0.0);
     // m_ShooterMotorRight.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void tiltToPosition(double targetPosRot)
+  {
+    posTilt = m_ShooterMotorTilt.getSelectedSensorPosition();
+    posTilt_entry.setDouble(posTilt);
+    if (posTilt < targetPosRot) {
+      targetPosRot = targetPosRot + 400;
+    }
+    else {
+      targetPosRot = targetPosRot - 400;
+    }
+    // m_ShooterMotorTilt.set(TalonFXControlMode.Position, targetPosRot);
+    error = targetPosRot - posTilt;
+    control = 0.000044 * error;
+    if (control > 0.15)
+    {
+      control = 0.15;
+    }
+    else if (control < -0.15)
+    {
+      control = -0.15;
+    }
+    else;
+
+    if (Math.abs(error) < 50)
+    {
+      control = 0;
+    }
+    else;
+
+    m_ShooterMotorTilt.set(ControlMode.PercentOutput, control);
+  }
+
+  public void resetShooterTiltEncoder() {
+    m_ShooterMotorTilt.setSelectedSensorPosition(0.0);
   }
 }

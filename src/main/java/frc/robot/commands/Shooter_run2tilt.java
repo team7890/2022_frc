@@ -12,12 +12,12 @@ import frc.robot.subsystems.Shooter2tilt;
 
 public class Shooter_run2tilt extends CommandBase {
   SlewRateLimiter filter = new SlewRateLimiter(Constants.Shooter.slewRate);
-  private final double dSpeed;
+  private final double dPos;
   private final Shooter2tilt m_Shooter2Tilt;
   /** Creates a new Shooter_runIn. */
   public Shooter_run2tilt(Shooter2tilt Shooter_in, double speed_in) {
     m_Shooter2Tilt = Shooter_in;
-    dSpeed = speed_in;
+    dPos = speed_in;
     addRequirements(m_Shooter2Tilt);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -34,14 +34,21 @@ public class Shooter_run2tilt extends CommandBase {
   public void execute() 
   {
     // Ability to toggle slew rate
-    if (Constants.Shooter.applySlewRate)
-    {
-      m_Shooter2Tilt.runShooter(filter.calculate(dSpeed));
-    }
-    else
-    {
-      m_Shooter2Tilt.runShooter(dSpeed);
-    }
+
+
+    // m_Shooter2Tilt.tiltToPosition(dPos);
+    m_Shooter2Tilt.runShooter(dPos);
+
+
+
+    // if (Constants.Shooter.applySlewRate)
+    // {
+    //   m_Shooter2Tilt.runShooter(filter.calculate(dSpeed));
+    // }
+    // else
+    // {
+    //   m_Shooter2Tilt.runShooter(dSpeed);
+    // }
     
   }
 
