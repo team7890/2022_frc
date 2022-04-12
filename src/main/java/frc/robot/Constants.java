@@ -128,7 +128,7 @@ public final class Constants
         public static final double slewRate = 0.4;
         public static final int currentLimit = 40;
         public static final double shooterSpeed = -0.265;
-        public static final double shooterHighSpeed = -0.58;
+        public static final double shooterHighSpeed = -0.6;
         public static final double shooterRevSpeed = -0.25;
         public static final boolean applySlewRate = false;
         public static final double indexShootSpeed = 0.8;

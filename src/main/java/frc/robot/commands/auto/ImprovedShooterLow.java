@@ -27,10 +27,10 @@ public class ImprovedShooterLow extends SequentialCommandGroup {
     addCommands
     (
       new ParallelCommandGroup(
-        new Indexer_run(m_autoIndexer, - Constants.Indexer.indexRevSpeed).withTimeout(0.1),
-        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterLowSpeed).withTimeout(0.1),
-        new Shooter_run2tiltToPosition(m_autoShooterTilt, Constants.Shooter.shooterLowHood).withTimeout(0.1)
-      ),
+        new Indexer_run(m_autoIndexer, - Constants.Indexer.indexRevSpeed * 5),
+        new Shooter_run2tiltToPosition(m_autoShooterTilt, Constants.Shooter.shooterLowHood)
+      ).withTimeout(0.4),
+      new Shooter_run2(m_autoShooter, Constants.Shooter.shooterLowSpeed).withTimeout(0.25),
       new ParallelCommandGroup
       (
         new Shooter_run2(m_autoShooter, Constants.Shooter.shooterLowSpeed),

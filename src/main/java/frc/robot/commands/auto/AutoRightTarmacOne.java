@@ -34,16 +34,16 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
     
     addCommands
     (
-      new ParallelCommandGroup
-      (
+      // new ParallelCommandGroup
+      // (
         // Indexer and shooter run, variables are speed
-        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
-        new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed),
-        new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
-      ).withTimeout(2.0),
+        // new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
+        // new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed),
+        // new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
+      // ).withTimeout(2.0),
 
       // Drives, first variable is front/back, second is right/left, third is rotation
-      new AutoDriveTrain_run(m_autoDriveTrain, -0.4, -1.0, 0.0).withTimeout(1.0),
+      new AutoDriveTrain_run(m_autoDriveTrain, -0.4, -1.0, 0.0).withTimeout(0.5),
 
       new ParallelCommandGroup
       (
@@ -53,23 +53,25 @@ public class AutoRightTarmacOne extends SequentialCommandGroup {
         new Intake_run(m_autoIntake, 0.9).withTimeout(1.5)
       ),
 
-      new AutoHoodShoot(m_limelight, m_autoShooter2, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
 
-      // new ParallelCommandGroup
-      // (
-      //   // Driving, intaking, and reversing the intake winch
-      //   new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
-      //   new Intake_run(m_autoIntake, 0.9).withTimeout(2.0),
-      //   // IF auto continues to veer right, lower the first number in this command
-      //   new AutoDriveTrain_run(m_autoDriveTrain, 0.5, 1.0, 0.0).withTimeout(2.0)
-      // ),
+      new ParallelCommandGroup
+      (
+        // Driving, intaking, and reversing the intake winch
+        new IntakeWinch_run(m_autoIntakeWinch, -0.2).withTimeout(1.45),
+        new Intake_run(m_autoIntake, 0.9).withTimeout(1.75)
+        // IF auto continues to veer right, lower the first number in this command
+        // new AutoDriveTrain_run(m_autoDriveTrain, 0.5, 1.0, 0.0).withTimeout(2.0)
+      ),
+
+      // new AutoHoodShoot(m_limelight, m_autoShooter2, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
+
       
-      // new ParallelCommandGroup
-      // (
-      //   // Shooting and indexing
-      //   new Indexer_run(m_autoIndexer, 0.75),
-      //   new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
-      // ).withTimeout(4.0)
+      new ParallelCommandGroup
+      (
+        // Shooting and indexing
+        new Indexer_run(m_autoIndexer, 0.75),
+        new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed)
+      ).withTimeout(4.0)
     );
   }
 }

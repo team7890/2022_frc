@@ -66,9 +66,9 @@ public class AutoLeftTarmacPosTwo extends SequentialCommandGroup {
 
  
         // index and shoot
-        // new Indexer_run(m_autoIndexer, 0.75),
-        // new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
-      new AutoHoodShoot(m_autoLimelight, m_autoShooter, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
+        new Indexer_run(m_autoIndexer, 0.75),
+        new Shooter_run2(m_autoShooter, Constants.Shooter.shooterHighSpeed)
+      // new AutoHoodShoot(m_autoLimelight, m_autoShooter, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
 
 
       // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(2.0),

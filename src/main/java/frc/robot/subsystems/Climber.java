@@ -46,7 +46,7 @@ public class Climber extends SubsystemBase {
     // this.setClimberBackLimitON();
     m_climbHigh.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
 
-    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 26);
+    m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 32);
     m_climbHigh.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
 
     m_encoder = m_climbHigh.getEncoder();

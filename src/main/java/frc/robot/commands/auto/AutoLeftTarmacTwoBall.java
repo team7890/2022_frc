@@ -49,13 +49,13 @@ public class AutoLeftTarmacTwoBall extends SequentialCommandGroup {
       addCommands
       (
         
-        new ParallelCommandGroup
-        (
-          // index and shoot
-          new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
-          new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed),
-          new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
-        ).withTimeout(4.0),
+        // new ParallelCommandGroup
+        // (
+        //   // index and shoot
+        //   new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
+        //   new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed),
+        //   new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
+        // ).withTimeout(4.0),
         // Drive train, variables in AutoRightTarmacOne
         new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.3),
   
@@ -90,7 +90,7 @@ public class AutoLeftTarmacTwoBall extends SequentialCommandGroup {
         // new AutoDriveTrain_run(m_autoDriveTrain, 1.0, -0.8, -0.225).withTimeout(1.7)
       ),
   
-      new AutoHoodShoot(m_autoLimelight, m_autoShooter2, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
+      // new AutoHoodShoot(m_autoLimelight, m_autoShooter2, m_autoShooterTilt, m_autoDriveTrain, m_autoIndexer).withTimeout(4.0)
   
         // WAITING 10 SECONDS
         // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 0.0).withTimeout(10),
@@ -101,12 +101,12 @@ public class AutoLeftTarmacTwoBall extends SequentialCommandGroup {
       
           // driving, intaking, intkae winching
 
-      // new ParallelCommandGroup
-      // (
-      //   // index and shoot
-      //   new Indexer_run(m_autoIndexer, 0.75),
-      //   new Shooter_run(m_autoShooter, Constants.Shooter.shooterHighSpeed)
-      // ).withTimeout(4.0)
+      new ParallelCommandGroup
+      (
+        // index and shoot
+        new Indexer_run(m_autoIndexer, 0.75),
+        new Shooter_run2(m_autoShooter2, Constants.Shooter.shooterHighSpeed)
+      ).withTimeout(4.0)
 
 
       // new AutoDriveTrain_run(m_autoDriveTrain, 0.0, 0.0, 1.0).withTimeout(2.0),

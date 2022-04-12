@@ -45,6 +45,7 @@ import frc.robot.commands.auto.IntakeAndIndexerOut;
 import frc.robot.commands.auto.AutoLeftTarmacTwoBall;
 import frc.robot.commands.Shooter_run2;
 import frc.robot.commands.Shooter_run2tilt;
+import frc.robot.commands.Shooter_run2tiltToPosition;
 import frc.robot.commands.DriveAlignLimelight;
 import frc.robot.commands.auto.AutoHoodShoot;
 // import frc.robot.commands.WindmillClimber_run;
@@ -120,8 +121,8 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_driveTrain.setDefaultCommand(new DriveTrain_run(
             m_driveTrain,
-            () -> -modifyAxisDrive(m_driverController.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxisDrive(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_driverController.getLeftY()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_driverController.getLeftX()) * DriveTrain.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_driverController.getRightX()) * 0.5 * DriveTrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
     // m_climber.setDefaultCommand(new Climber_run(m_climber, () -> modifyAxis(m_driverController.getRightY()))); //FIXME change control
@@ -223,17 +224,23 @@ public class RobotContainer {
     // new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new Shooter_run(m_shooter, Constants.Shooter.shooterHighSpeed));
     // Low goal shoot
     new JoystickButton(m_coController, Button.kLeftBumper.value).whenHeld(new ImprovedShooterLow(m_shooter2, m_indexer, m_shooter2tilt));
+    new JoystickButton(m_coController, Button.kLeftBumper.value).whenReleased(new Shooter_run2tiltToPosition(m_shooter2tilt, 0));
+
+    // SHOOTER COMMANDS
     // FIXME CHANGE INPUT to trigger, if possible
     // --- next line for old shooter
     // new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter, m_indexer));
     // --- next line for new shooter
-    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new AutoHoodShoot(m_limelight, m_shooter2, m_shooter2tilt, m_driveTrain, m_indexer));
+    // new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new AutoHoodShoot(m_limelight, m_shooter2, m_shooter2tilt, m_driveTrain, m_indexer));
+
+    new JoystickButton(m_coController, Button.kRightBumper.value).whenHeld(new ImprovedShooter(m_shooter2, m_indexer, m_shooter2tilt));
+    new JoystickButton(m_coController, Button.kRightBumper.value).whenReleased(new Shooter_run2tiltToPosition(m_shooter2tilt, 0));
 
     // RESET GYROSCOPE
     // new JoystickButton(m_driverController, Button.kBack.value).whenPressed(m_DriveTrain.zeroGyroscope());
 
     // HOODED SHOOTER TESTING
-    new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new DriveAlignLimelight(m_limelight, m_driveTrain));
+    // new JoystickButton(m_driverController, Button.kRightBumper.value).whenHeld(new DriveAlignLimelight(m_limelight, m_driveTrain));
   }
 
   /**

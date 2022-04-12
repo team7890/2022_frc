@@ -33,11 +33,13 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
 
     addCommands
     (
+      new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(0.25),
+
       
       new ParallelCommandGroup
       (
         // index and shoot
-        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed),
+        new Indexer_run(m_autoIndexer, Constants.Shooter.indexShootSpeed * 0.25),
         new Shooter_run2(m_autoShooter, Constants.Shooter.shooterHighSpeed),
         new Shooter_run2tiltToPosition(m_autoShooterTilt, 0)
       ).withTimeout(4.0),
@@ -55,7 +57,7 @@ public class AutoLeftTarmacMoveOut extends SequentialCommandGroup {
     
         // driving, intaking, intkae winching
  
-        new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(1.0)
+        new AutoDriveTrain_run(m_autoDriveTrain, -0.95, 0.0, 0.0).withTimeout(0.75)
      
       
 
